@@ -5,5 +5,9 @@ def index():
 def home():
     return dict()
 
+def register():
+    form = SQLFORM(db.register)
+    return dict(form = form)
+
 def user():
     return dict(form = auth())

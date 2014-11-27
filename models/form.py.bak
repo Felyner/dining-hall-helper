@@ -1,0 +1,7 @@
+form = DAL('sqlite://webform.sqlite')
+
+form.define_table('register',
+                Field('first_name', requires = [IS_NOT_EMPTY(), IS_ALPHANUMERIC()]),
+                Field('last_name', requires = [IS_NOT_EMPTY(), IS_ALPHANUMERIC()]),
+                Field('email', unique = True, requires = [IS_NOT_EMPTY(), IS_NOT_IN_DB(form, 'register.email'), IS_EMAIL()]),
+                Field('email_validate', requires = IS_EQUAL_TO(request.vars.email)))

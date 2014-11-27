@@ -53,3 +53,22 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2014-11-26T21:53:25.418851
+CREATE TABLE register(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    email CHAR(512),
+    email_validate CHAR(512)
+);
+success!
+success!
+timestamp: 2014-11-26T22:11:12.317533
+CREATE TABLE register(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    email CHAR(512) UNIQUE,
+    email_validate CHAR(512)
+);
+success!

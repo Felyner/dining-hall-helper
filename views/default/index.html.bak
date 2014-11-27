@@ -1,3 +1,5 @@
 <h1>Dining Hall Helper</h1>
 <br>
 {{=A('Login', _class = 'btn', _href = URL('home'))}}
+<br>
+{{=A('Register', _class = 'btn', _href = URL('register'))}}
