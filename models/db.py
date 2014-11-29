@@ -43,7 +43,7 @@ db.define_table(
   'snap',
   Field('picture', 'upload'),
   Field('author', 'reference auth_user', default=auth.user_id), # is this formatted right?
-  Field('helpful', 'int'),
+  Field('helpful', 'integer'),
   Field('DH', 'string'),
   Field('time_posted', 'datetime', default=request.now)
   )
@@ -58,8 +58,8 @@ db.define_table(
 #    which DHs improve/weaken, etc.
 db.define_table(
   'rating',
-  Field('quality', 'int'), # 1-5?
-  Field('business', 'int'), # 1-5?
+  Field('quality', 'integer'), # 1-5?
+  Field('business', 'integer'), # 1-5?
   Field('DH', 'string'),
   Field('time_posted', 'datetime', default=request.now),
   Field('comments', 'text'),
