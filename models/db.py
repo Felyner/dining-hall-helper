@@ -59,8 +59,8 @@ db.define_table(
 #    which DHs improve/weaken, etc.
 db.define_table(
   'rating',
-  Field('quality', 'integer'), # 1-5?
-  Field('business', 'integer'), # 1-5?
+  Field('quality', 'double'), # 1-5?
+  Field('business', 'double'), # 1-5?
   Field('DH', 'string'),
   Field('time_posted', 'datetime', default=request.now),
   Field('comments', 'text'),
