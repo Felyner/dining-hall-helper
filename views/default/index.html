@@ -1,3 +1,5 @@
+<!--Not sure if you needed this: {{=A('Login', _class = 'btn', _href = URL('home'))}}-->
+
 {{extend 'layout.html'}}
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
 <h1>Pick a Dining Hall</h1>
@@ -11,6 +13,142 @@
         
     </tr>
     <tr>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in cowellRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in crownRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in porterRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in eightRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in nineRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        
+    </tr>
+    <tr>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in cowellRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in crownRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in porterRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in eightRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in nineRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        
+    </tr>
+    <tr>
         <td><button onclick="document.location='{{=URL('getSnaps', args='cowell')}}';" >Cowell/Stevenson</button></td>
         <td><button onclick="document.location='{{=URL('getSnaps', args='crown')}}';" >Crown/Merill</button></td>
         <td><button onclick="document.location='{{=URL('getSnaps', args='porter')}}';" >Porter/Kresge</button></td>
@@ -20,4 +158,4 @@
 </table>
 
 
-{{=BEAUTIFY(response._vars)}}
+<!--{{=BEAUTIFY(response._vars)}}-->
