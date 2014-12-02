@@ -41,7 +41,8 @@ db.define_table(
 #    not sure which approach would be best.
 db.define_table(
   'snap',
-  Field('picture', 'upload'),
+  Field('picture', 'upload', uploadfield='picture_file'),
+  Field('picture_file', 'blob'),
   Field('author', 'reference auth_user', default=auth.user_id), # is this formatted right?
   Field('helpful', 'integer'),
   Field('DH', 'string'),
