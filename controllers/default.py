@@ -109,8 +109,20 @@ def getSnaps():
     return dict(snaps = snaps, cowellRatings=cowellRatings, crownRatings=crownRatings,
                 porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings)
 
+
+def submit():
+    # Here is how the input that goes to the iPhone camera looks (ios5 min?)
+    # <input type=file accept="image/*">
+    if(args[0]=="snap"): #not correct
+        form=FORM('Snap:')
+    else: #not correct
+        form=FORM('Rating:')
+    pass
+
 def help():
     query = (db.snap.picture == request.args[0])
     snaps = db(query).select(db.snap.ALL)
     newHelpful = snaps[0].helpful+1
     db(query).update(helpful = newHelpful)
+    
+    
