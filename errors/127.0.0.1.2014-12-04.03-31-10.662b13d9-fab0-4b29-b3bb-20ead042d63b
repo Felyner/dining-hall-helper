@@ -1,0 +1,701 @@
+(dp1
+S'output'
+p2
+S"<class 'applications.dining_hall_helper.modules.requests.exceptions.InvalidSchema'> No connection adapters were found for 'view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag='"
+p3
+sS'layer'
+p4
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n#########################################################################\n## This is a sample controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - api is an example of Hypermedia API support and access control\n#########################################################################\n\ndef index():\n    """\n    example action using the internationalization operator T and flash\n    rendered by views/default/index.html or views/generic.html\n\n    if you need a simple wiki simply replace the two lines below with:\n    return auth.wiki()\n    """\n    #response.flash = T("Welcome to web2py!")\n    \n    # Ratings for all DHs\n    query = (db.rating.DH == "cowell")\n    cowellRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "crown")\n    crownRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "porter")\n    porterRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "eight")\n    eightRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "nine")\n    nineRatings = db(query).select(db.rating.ALL)\n    \n    \n    \n    return dict(cowellRatings=cowellRatings, crownRatings=crownRatings, porterRatings=porterRatings,\n                eightRatings=eightRatings, nineRatings=nineRatings)\n\n\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n\n@auth.requires_login() \ndef api():\n    """\n    this is example of API with access control\n    WEB2PY provides Hypermedia API (Collection+JSON) Experimental\n    """\n    from gluon.contrib.hypermedia import Collection\n    rules = {\n        \'<tablename>\': {\'GET\':{},\'POST\':{},\'PUT\':{},\'DELETE\':{}},\n        }\n    return Collection(db).process(request,response,rules)\n\n\n\n\ndef getSnaps():\n    # Snaps for requested DH\n    query = (db.snap.DH == request.args[0])\n    snaps = db(query).select(db.snap.ALL, orderby=~db.snap.helpful)\n    # Ratings for all DHs\n    query = (db.rating.DH == "cowell")\n    cowellRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "crown")\n    crownRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "porter")\n    porterRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "eight")\n    eightRatings = db(query).select(db.rating.ALL)\n    query = (db.rating.DH == "nine")\n    nineRatings = db(query).select(db.rating.ALL)\n    \n    response.view = \'default/snaps.html\'\n    return dict(snaps = snaps, cowellRatings=cowellRatings, crownRatings=crownRatings,\n                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings)\n\n\ndef submit():\n    # Here is how the input that goes to the iPhone camera looks (ios5 min?)\n    # <input type=file accept="image/*">\n    if(args[0]=="snap"): #not correct\n        form=FORM(\'Snap:\')\n    else: #not correct\n        form=FORM(\'Rating:\')\n    pass\n\ndef help():\n    query = (db.snap.picture == request.args[0])\n    snaps = db(query).select(db.snap.ALL)\n    newHelpful = snaps[0].helpful+1\n    db(query).update(helpful = newHelpful)\n    \n    \ndef scrape():\n    import requests\n    html = requests.get(\'view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag=\')\n    page = TAG(html.text)\n    items = []\n    for i in page.elements(\'.menusamprecipes span, p.is\'): prices.append(i)\n    return dict(items = items)\n\nresponse._vars=response._caller(scrape)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__module__'
+p12
+S"'applications.dining_hall_helper.modules.requests.exceptions'"
+p13
+sS'__getslice__'
+p14
+S"<method-wrapper '__getslice__' of InvalidSchema object>"
+p15
+sS'__str__'
+p16
+S"<method-wrapper '__str__' of InvalidSchema object>"
+p17
+sS'__reduce__'
+p18
+S'<built-in method __reduce__ of InvalidSchema object>'
+p19
+sS'__dict__'
+p20
+S"{'request': None, 'response': None}"
+p21
+sS'__sizeof__'
+p22
+S'<built-in method __sizeof__ of InvalidSchema object>'
+p23
+sS'__weakref__'
+p24
+S'None'
+p25
+sS'__init__'
+p26
+S'<bound method InvalidSchema.__init__ of InvalidS...20&locationName=Crown+Merrill&sName=&naFlag=\'",)>'
+p27
+sS'__setattr__'
+p28
+S"<method-wrapper '__setattr__' of InvalidSchema object>"
+p29
+sS'__reduce_ex__'
+p30
+S'<built-in method __reduce_ex__ of InvalidSchema object>'
+p31
+sS'__new__'
+p32
+S'<built-in method __new__ of type object>'
+p33
+sS'errno'
+p34
+S'None'
+p35
+sS'__format__'
+p36
+S'<built-in method __format__ of InvalidSchema object>'
+p37
+sS'__class__'
+p38
+S"<class 'applications.dining_hall_helper.modules.requests.exceptions.InvalidSchema'>"
+p39
+sS'filename'
+p40
+S'None'
+p41
+sS'__doc__'
+p42
+S"'See defaults.py for valid schemas.'"
+p43
+sS'__getitem__'
+p44
+S"<method-wrapper '__getitem__' of InvalidSchema object>"
+p45
+sS'__setstate__'
+p46
+S'<built-in method __setstate__ of InvalidSchema object>'
+p47
+sS'__getattribute__'
+p48
+S"<method-wrapper '__getattribute__' of InvalidSchema object>"
+p49
+sS'args'
+p50
+S'(u"No connection adapters were found for \'view-so...um=20&locationName=Crown+Merrill&sName=&naFlag=\'",)'
+p51
+sS'__subclasshook__'
+p52
+S'<built-in method __subclasshook__ of type object>'
+p53
+sS'response'
+p54
+S'None'
+p55
+sS'__unicode__'
+p56
+S'<built-in method __unicode__ of InvalidSchema object>'
+p57
+sS'request'
+p58
+S'None'
+p59
+sS'strerror'
+p60
+S'None'
+p61
+sS'__delattr__'
+p62
+S"<method-wrapper '__delattr__' of InvalidSchema object>"
+p63
+sS'__repr__'
+p64
+S"<method-wrapper '__repr__' of InvalidSchema object>"
+p65
+sS'__hash__'
+p66
+S"<method-wrapper '__hash__' of InvalidSchema object>"
+p67
+ssS'evalue'
+p68
+S"No connection adapters were found for 'view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag='"
+p69
+sg58
+cgluon.html
+XML_unpickle
+p70
+(S'sT_\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>dining_hall_helper</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-75d28f81-4a8d-4ec9-a0c5-0b1f1b181620<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_dining_hall_helper</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-4bf438d7-db7e-4295-96aa-ad6889c55d6a<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CACHE_CONTROL</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-4bf438d7-db7e-4295-96aa-ad6889c55d6a; session_id_dining_hall_helper=127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7; session_id_admin=127.0.0.1-75d28f81-4a8d-4ec9-a0c5-0b1f1b181620</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_helper/default/scrape.html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>50676</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/patrickmathieu/Documents/web2py/applications/welcome/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/admin/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x1066db440: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;10.0.0.8&#x27;, &#x27;2601:9:2580:3af:e6ce:8fff:fe3f:ef86&#x27;, &#x27;fe80::e6ce:8fff:fe3f:ef86%en1&#x27;, &#x27;2601:9:2580:3af:ad98:8b79:1acc:3f66&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Patricks-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/patrickmathieu/Documents/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cache_control</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-4bf438d7-db7e-4295-96aa-ad6889c55d6a; session_id_dining_hall_helper=127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7; session_id_admin=127.0.0.1-75d28f81-4a8d-4ec9-a0c5-0b1f1b181620</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>2601:9:2580:3af:ad98:8b79:1acc:3f66</div></td></tr><tr><td><div>2601:9:2580:3af:e6ce:8fff:fe3f:ef86</div></td></tr><tr><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::e6ce:8fff:fe3f:ef86%en1</div></td></tr><tr><td><div>10.0.0.8</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_helper/default/scrape.html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>50676</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_helper/default/scrape.html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.9.11-stable+timestamp.2014.09.15.23.35.11</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x1057c01e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x106433db8&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x1066ed250&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x1057c01e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x106433db8&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x1066ed250&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>scrape</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/patrickmathieu/Documents/web2py/applications/welcome/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/admin/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x1066db440: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;10.0.0.8&#x27;, &#x27;2601:9:2580:3af:e6ce:8fff:fe3f:ef86&#x27;, &#x27;fe80::e6ce:8fff:fe3f:ef86%en1&#x27;, &#x27;2601:9:2580:3af:ad98:8b79:1acc:3f66&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Patricks-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/patrickmathieu/Documents/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>2601:9:2580:3af:ad98:8b79:1acc:3f66</div></td></tr><tr><td><div>2601:9:2580:3af:e6ce:8fff:fe3f:ef86</div></td></tr><tr><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::e6ce:8fff:fe3f:ef86%en1</div></td></tr><tr><td><div>10.0.0.8</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.9.11-stable+timestamp.2014.09.15.23.35.11</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_sheduler</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2014, 12, 4, 3, 31, 10, 243006)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_helper/default/scrape.html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2014, 12, 4, 11, 31, 10, 243016)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">uuid</td><td style="vertical-align:top;">:</td><td><div>dining_hall_helper/127.0.0.1.2014-12-04.03-31-10.662b13d9-fab0-4b29-b3bb-20ead042d63b</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x110b5ae90&gt;</div></td></tr></table></div>'
+tRp71
+sS'frames'
+p72
+(lp73
+(dp74
+S'file'
+p75
+S'/Users/patrickmathieu/Documents/web2py/gluon/restricted.py'
+p76
+sS'dump'
+p77
+(dp78
+S'environment'
+p79
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, 'CAT': <class 'gluon.html.CAT'>, ...}"
+p80
+sS'ccode'
+p81
+S'<code object <module> at 0x1066ed730, file "/Use...ing_hall_helper/controllers/default.py", line 12>'
+p82
+ssS'lnum'
+p83
+I224
+sS'lines'
+p84
+(dp85
+I224
+S'        exec ccode in environment'
+p86
+sI225
+S'    except HTTP:'
+p87
+sI226
+S'        raise'
+p88
+sI227
+S'    except RestrictedError:'
+p89
+sI228
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p90
+sI219
+S'    try:'
+p91
+sI220
+S'        if isinstance(code, types.CodeType):'
+p92
+sI221
+S'            ccode = code'
+p93
+sI222
+S'        else:'
+p94
+sI223
+S'            ccode = compile2(code, layer)'
+p95
+ssS'call'
+p96
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ... items)\\n\\nresponse._vars=response._caller(scrape)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, 'CAT': <class 'gluon.html.CAT'>, ...}, layer='/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py')"
+p97
+sS'func'
+p98
+S'restricted'
+p99
+sa(dp100
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py'
+p101
+sg77
+(dp102
+sg83
+I137
+sg84
+(dp103
+I128
+S''
+sI129
+S'def scrape():'
+p104
+sI130
+S'    import requests'
+p105
+sI131
+S"    html = requests.get('view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag=')"
+p106
+sI132
+S'    page = TAG(html.text)'
+p107
+sI133
+S'    items = []'
+p108
+sI134
+S"    for i in page.elements('.menusamprecipes span, p.is'): prices.append(i)"
+p109
+sI135
+S'    return dict(items = items)'
+p110
+sI126
+S'    db(query).update(helpful = newHelpful)'
+p111
+sI127
+S''
+ssg96
+S'()'
+p112
+sg98
+S'<module>'
+p113
+sa(dp114
+g75
+S'/Users/patrickmathieu/Documents/web2py/gluon/globals.py'
+p115
+sg77
+(dp116
+S'self'
+p117
+S'undefined'
+p118
+sS'f'
+S'<function scrape>'
+p119
+ssg83
+I392
+sg84
+(dp120
+I387
+S"        self.flash = ''            # used by the default view layout"
+p121
+sI388
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p122
+sI389
+S'        self.menu = []             # used by the default view layout'
+p123
+sI390
+S'        self.files = []            # used by web2py_ajax.html'
+p124
+sI391
+S'        self._vars = None'
+p125
+sI392
+S'        self._caller = lambda f: f()'
+p126
+sI393
+S'        self._view_environment = None'
+p127
+sI394
+S'        self._custom_commit = None'
+p128
+sI395
+S'        self._custom_rollback = None'
+p129
+sI396
+S"        self.generic_patterns = ['*']"
+p130
+ssg96
+S'(f=<function scrape>)'
+p131
+sg98
+S'<lambda>'
+p132
+sa(dp133
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py'
+p134
+sg77
+(dp135
+S'requests.get'
+p136
+S'<function get>'
+p137
+sS'requests'
+p138
+S"<module 'applications.dining_hall_helper.modules...ining_hall_helper/modules/requests/__init__.pyc'>"
+p139
+sS'html'
+p140
+g118
+ssg83
+I131
+sg84
+(dp141
+I128
+S''
+sI129
+S'def scrape():'
+p142
+sI130
+S'    import requests'
+p143
+sI131
+S"    html = requests.get('view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag=')"
+p144
+sI132
+S'    page = TAG(html.text)'
+p145
+sI133
+S'    items = []'
+p146
+sI134
+S"    for i in page.elements('.menusamprecipes span, p.is'): prices.append(i)"
+p147
+sI135
+S'    return dict(items = items)'
+p148
+sI126
+S'    db(query).update(helpful = newHelpful)'
+p149
+sI127
+S''
+ssg96
+S'()'
+p150
+sg98
+S'scrape'
+p151
+sa(dp152
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/modules/requests/api.py'
+p153
+sg77
+(dp154
+S'global request'
+p155
+S'<function request>'
+p156
+sS'url'
+p157
+S"'view-source:http://nutrition.sa.ucsc.edu/menuSam...nNum=20&locationName=Crown+Merrill&sName=&naFlag='"
+p158
+sS'kwargs'
+p159
+S"{'allow_redirects': True}"
+p160
+ssg83
+I65
+sg84
+(dp161
+I64
+S"    kwargs.setdefault('allow_redirects', True)"
+p162
+sI65
+S"    return request('get', url, **kwargs)"
+p163
+sI66
+S''
+sI67
+S''
+sI68
+S'def options(url, **kwargs):'
+p164
+sI69
+S'    """Sends a OPTIONS request. Returns :class:`Response` object.'
+p165
+sI60
+S'    :param url: URL for the new :class:`Request` object.'
+p166
+sI61
+S'    :param \\*\\*kwargs: Optional arguments that ``request`` takes.'
+p167
+sI62
+S'    """'
+p168
+sI63
+S''
+ssg96
+S"(url='view-source:http://nutrition.sa.ucsc.edu/menuSam...nNum=20&locationName=Crown+Merrill&sName=&naFlag=', **kwargs={'allow_redirects': True})"
+p169
+sg98
+S'get'
+p170
+sa(dp171
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/modules/requests/api.py'
+p172
+sg77
+(dp173
+S'session.request'
+p174
+S'<bound method Session.request of <applications.d...helper.modules.requests.sessions.Session object>>'
+p175
+sS'url'
+p176
+S"'view-source:http://nutrition.sa.ucsc.edu/menuSam...nNum=20&locationName=Crown+Merrill&sName=&naFlag='"
+p177
+sS'method'
+p178
+S"'get'"
+p179
+sS'session'
+p180
+S'<applications.dining_hall_helper.modules.requests.sessions.Session object>'
+p181
+sS'kwargs'
+p182
+S"{'allow_redirects': True}"
+p183
+sS'response'
+p184
+g118
+ssg83
+I49
+sg84
+(dp185
+I44
+S"      >>> req = requests.request('GET', 'http://httpbin.org/get')"
+p186
+sI45
+S'      <Response [200]>'
+p187
+sI46
+S'    """'
+p188
+sI47
+S''
+sI48
+S'    session = sessions.Session()'
+p189
+sI49
+S'    response = session.request(method=method, url=url, **kwargs)'
+p190
+sI50
+S'    # By explicitly closing the session, we avoid leaving sockets open which'
+p191
+sI51
+S'    # can trigger a ResourceWarning in some cases, and look like a memory leak'
+p192
+sI52
+S'    # in others.'
+p193
+sI53
+S'    session.close()'
+p194
+ssg96
+S"(method='get', url='view-source:http://nutrition.sa.ucsc.edu/menuSam...nNum=20&locationName=Crown+Merrill&sName=&naFlag=', **kwargs={'allow_redirects': True})"
+p195
+sg98
+g58
+sa(dp196
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/modules/requests/sessions.py'
+p197
+sg77
+(dp198
+S'resp'
+p199
+g118
+sS'send_kwargs'
+p200
+S"{'allow_redirects': True, 'cert': None, 'proxies': {}, 'stream': False, 'timeout': None, 'verify': True}"
+p201
+sS'prep'
+p202
+S'<PreparedRequest [GET]>'
+p203
+sS'self'
+p204
+S'<applications.dining_hall_helper.modules.requests.sessions.Session object>'
+p205
+sS'self.send'
+p206
+S'<bound method Session.send of <applications.dini...helper.modules.requests.sessions.Session object>>'
+p207
+ssg83
+I461
+sg84
+(dp208
+I456
+S'        send_kwargs = {'
+p209
+sI457
+S"            'timeout': timeout,"
+p210
+sI458
+S"            'allow_redirects': allow_redirects,"
+p211
+sI459
+S'        }'
+p212
+sI460
+S'        send_kwargs.update(settings)'
+p213
+sI461
+S'        resp = self.send(prep, **send_kwargs)'
+p214
+sI462
+S''
+sI463
+S'        return resp'
+p215
+sI464
+S''
+sI465
+S'    def get(self, url, **kwargs):'
+p216
+ssg96
+S"(self=<applications.dining_hall_helper.modules.requests.sessions.Session object>, method='get', url='view-source:http://nutrition.sa.ucsc.edu/menuSam...nNum=20&locationName=Crown+Merrill&sName=&naFlag=', params=None, data=None, headers=None, cookies=None, files=None, auth=None, timeout=None, allow_redirects=True, proxies={}, hooks=None, stream=None, verify=None, cert=None, json=None)"
+p217
+sg98
+g58
+sa(dp218
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/modules/requests/sessions.py'
+p219
+sg77
+(dp220
+S'url'
+p221
+g118
+sS'request.url'
+p222
+S"u'view-source:http://nutrition.sa.ucsc.edu/menuS...Num=20&locationName=Crown+Merrill&sName=&naFlag='"
+p223
+sS'adapter'
+p224
+g118
+sS'request'
+p225
+S'<PreparedRequest [GET]>'
+p226
+sS'self.get_adapter'
+p227
+S'<bound method Session.get_adapter of <applicatio...helper.modules.requests.sessions.Session object>>'
+p228
+sS'self'
+p229
+S'<applications.dining_hall_helper.modules.requests.sessions.Session object>'
+p230
+ssg83
+I567
+sg84
+(dp231
+I562
+S"        cert = kwargs.get('cert')"
+p232
+sI563
+S"        proxies = kwargs.get('proxies')"
+p233
+sI564
+S'        hooks = request.hooks'
+p234
+sI565
+S''
+sI566
+S'        # Get the appropriate adapter to use'
+p235
+sI567
+S'        adapter = self.get_adapter(url=request.url)'
+p236
+sI568
+S''
+sI569
+S'        # Start time (approximately) of the request'
+p237
+sI570
+S'        start = datetime.utcnow()'
+p238
+sI571
+S''
+ssg96
+S"(self=<applications.dining_hall_helper.modules.requests.sessions.Session object>, request=<PreparedRequest [GET]>, **kwargs={'cert': None, 'proxies': {}, 'stream': False, 'timeout': None, 'verify': True})"
+p239
+sg98
+S'send'
+p240
+sa(dp241
+g75
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/modules/requests/sessions.py'
+p242
+sg77
+(dp243
+S'url'
+p244
+S"u'view-source:http://nutrition.sa.ucsc.edu/menuS...Num=20&locationName=Crown+Merrill&sName=&naFlag='"
+p245
+sS'global InvalidSchema'
+p246
+S"<class 'applications.dining_hall_helper.modules.requests.exceptions.InvalidSchema'>"
+p247
+ssg83
+I646
+sg84
+(dp248
+I641
+S''
+sI642
+S'            if url.lower().startswith(prefix):'
+p249
+sI643
+S'                return adapter'
+p250
+sI644
+S''
+sI645
+S'        # Nothing matches :-/'
+p251
+sI646
+S'        raise InvalidSchema("No connection adapters were found for \'%s\'" % url)'
+p252
+sI647
+S''
+sI648
+S'    def close(self):'
+p253
+sI649
+S'        """Closes all adapters and as such the session"""'
+p254
+sI650
+S'        for v in self.adapters.values():'
+p255
+ssg96
+S"(self=<applications.dining_hall_helper.modules.requests.sessions.Session object>, url=u'view-source:http://nutrition.sa.ucsc.edu/menuS...Num=20&locationName=Crown+Merrill&sName=&naFlag=')"
+p256
+sg98
+S'get_adapter'
+p257
+sasS'pyver'
+p258
+S'Python 2.7.6: /usr/bin/python (prefix: /System/Library/Frameworks/Python.framework/Versions/2.7)'
+p259
+sS'session'
+p260
+g70
+(S's\x1a\x00\x00\x00<div><table></table></div>'
+tRp261
+sS'etype'
+p262
+S"<class 'applications.dining_hall_helper.modules.requests.exceptions.InvalidSchema'>"
+p263
+sS'date'
+p264
+S'Thu Dec  4 03:31:10 2014'
+p265
+sg54
+g70
+(S'sx3\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x1107b0bc8&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_dining_hall_helper</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div>: </div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>table3cols</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="brand" href="http://www.web2py.com/"><b>web<span>2</span>py</b>&trade;&nbsp;</a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/dining_hall_helper/default/index</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div><span class="highlighted">web2py</span></div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>My Sites</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/site</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>This App</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/design/dining_hall_helper</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Controller&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/controllers/default.py&#x27;), (&lt;lazyT &#x27;View&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/views/default/scrape.html&#x27;), (&lt;lazyT &#x27;Layout&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/views/layout.html&#x27;), (&lt;lazyT &#x27;Stylesheet&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/static/css/web2py.css&#x27;), (&lt;lazyT &#x27;DB Model&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/models/db.py&#x27;), (&lt;lazyT &#x27;Menu Model&#x27;&gt;, False, &#x27;/admin/default/edit/dining_hall_helper/models/menu.py&#x27;), (&lt;lazyT &#x27;Database&#x27;&gt;, False, &#x27;/dining_hall_helper/appadmin/index&#x27;), (&lt;lazyT &#x27;Errors&#x27;&gt;, False, &#x27;/admin/default/errors/dining_hall_helper&#x27;), (&lt;lazyT &#x27;About&#x27;&gt;, False, &#x27;/admin/default/about/dining_hall_helper&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>web2py.com</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Download&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/download&#x27;), (&lt;lazyT &#x27;Support&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/support&#x27;), (&lt;lazyT &#x27;Demo&#x27;&gt;, False, &#x27;http://web2py.com/demo_admin&#x27;), (&lt;lazyT &#x27;Quick Examples&#x27;&gt;, False, &#x27;http://web2py.com/examples/default/examples&#x27;), (&lt;lazyT &#x27;FAQ&#x27;&gt;, False, &#x27;http://web2py.com/AlterEgo&#x27;), (&lt;lazyT &#x27;Videos&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/videos/&#x27;), (&lt;lazyT &#x27;Free Applications&#x27;&gt;, False, &#x27;http://web2py.com/appliances&#x27;), (&lt;lazyT &#x27;Plugins&#x27;&gt;, False, &#x27;http://web2py.com/plugins&#x27;), (&lt;lazyT &#x27;Layouts&#x27;&gt;, False, &#x27;http://web2py.com/layouts&#x27;), (&lt;lazyT &#x27;Recipes&#x27;&gt;, False, &#x27;http://web2pyslices.com/&#x27;), (&lt;lazyT &#x27;Semantic&#x27;&gt;, False, &#x27;http://web2py.com/semantic&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Documentation</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Preface&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/00&#x27;), (&lt;lazyT &#x27;Introduction&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/01&#x27;), (&lt;lazyT &#x27;Python&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/02&#x27;), (&lt;lazyT &#x27;Overview&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/03&#x27;), (&lt;lazyT &#x27;The Core&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/04&#x27;), (&lt;lazyT &#x27;The Views&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/05&#x27;), (&lt;lazyT &#x27;Database&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/06&#x27;), (&lt;lazyT &#x27;Forms and Validators&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/07&#x27;), (&lt;lazyT &#x27;Email and SMS&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/08&#x27;), (&lt;lazyT &#x27;Access Control&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/09&#x27;), (&lt;lazyT &#x27;Services&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/10&#x27;), (&lt;lazyT &#x27;Ajax Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/11&#x27;), (&lt;lazyT &#x27;Components and Plugins&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/12&#x27;), (&lt;lazyT &#x27;Deployment Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/13&#x27;), (&lt;lazyT &#x27;Other Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/14&#x27;), (&lt;lazyT &#x27;Buy this book&#x27;&gt;, False, &#x27;http://stores.lulu.com/web2py&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Community</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Groups&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/usergroups&#x27;), (&lt;lazyT &#x27;Twitter&#x27;&gt;, False, &#x27;http://twitter.com/web2py&#x27;), (&lt;lazyT &#x27;Live Chat&#x27;&gt;, False, &#x27;http://webchat.freenode.net/?channels=web2py&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div>[(&#x27;plugin_wiki&#x27;, False, &#x27;http://web2py.com/examples/default/download&#x27;), (&lt;lazyT &#x27;Other Plugins&#x27;&gt;, False, &#x27;http://web2py.com/plugins&#x27;), (&lt;lazyT &#x27;Layout Plugins&#x27;&gt;, False, &#x27;http://web2py.com/layouts&#x27;)]</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div>web2py, python, framework</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/scrape/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_key</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_dining_hall_helper</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/sessions/090/0ec/127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7&#x27;, mode &#x27;rb+&#x27; at 0x10cec15d0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/sessions/127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>f467dc44cd0ced7ea9c236982b078432</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-02a41bd4-96f6-4cb2-b511-f42d166690e7</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_dining_hall_helper</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>dining_hall_helper</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Dining Hall Helper</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>default/scrape.html</div></td></tr></table></div>'
+tRp266
+sS'locals'
+p267
+(dp268
+S'url'
+p269
+S"u'view-source:http://nutrition.sa.ucsc.edu/menuS...Num=20&locationName=Crown+Merrill&sName=&naFlag='"
+p270
+sS'adapter'
+p271
+S'<applications.dining_hall_helper.modules.requests.adapters.HTTPAdapter object>'
+p272
+sS'self'
+p273
+S'<applications.dining_hall_helper.modules.requests.sessions.Session object>'
+p274
+sS'prefix'
+p275
+S"'http://'"
+p276
+sssS'traceback'
+p277
+S'Traceback (most recent call last):\n  File "/Users/patrickmathieu/Documents/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py", line 137, in <module>\n  File "/Users/patrickmathieu/Documents/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/controllers/default.py", line 131, in scrape\n    html = requests.get(\'view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag=\')\n  File "applications/dining_hall_helper/modules/requests/api.py", line 65, in get\n    return request(\'get\', url, **kwargs)\n  File "applications/dining_hall_helper/modules/requests/api.py", line 49, in request\n    response = session.request(method=method, url=url, **kwargs)\n  File "applications/dining_hall_helper/modules/requests/sessions.py", line 461, in request\n    resp = self.send(prep, **send_kwargs)\n  File "applications/dining_hall_helper/modules/requests/sessions.py", line 567, in send\n    adapter = self.get_adapter(url=request.url)\n  File "applications/dining_hall_helper/modules/requests/sessions.py", line 646, in get_adapter\n    raise InvalidSchema("No connection adapters were found for \'%s\'" % url)\nInvalidSchema: No connection adapters were found for \'view-source:http://nutrition.sa.ucsc.edu/menuSamp.asp?locationNum=20&locationName=Crown+Merrill&sName=&naFlag=\'\n'
+p278
+s.

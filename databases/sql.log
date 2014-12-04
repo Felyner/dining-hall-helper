@@ -72,3 +72,34 @@ CREATE TABLE register(
     email_validate CHAR(512)
 );
 success!
+timestamp: 2014-12-04T01:47:27.459473
+CREATE TABLE dish(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    DH CHAR(512),
+    date_served DATE,
+    meal CHAR(512)
+);
+success!
+timestamp: 2014-12-04T01:47:27.462678
+CREATE TABLE snap(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    picture CHAR(512),
+    picture_file BLOB,
+    author INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    helpful INTEGER,
+    DH CHAR(512),
+    time_posted TIMESTAMP
+);
+success!
+timestamp: 2014-12-04T01:47:27.465899
+CREATE TABLE rating(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    quality DOUBLE,
+    business DOUBLE,
+    DH CHAR(512),
+    time_posted TIMESTAMP,
+    comments TEXT,
+    author INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!

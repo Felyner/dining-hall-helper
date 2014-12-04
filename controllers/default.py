@@ -126,3 +126,7 @@ def help():
     db(query).update(helpful = newHelpful)
     
     
+def scrape():
+    import requests
+    import bs4
+    response = requests.get('http://econpy.pythonanywhere.com/ex/001.html')
