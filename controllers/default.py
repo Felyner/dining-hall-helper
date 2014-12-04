@@ -128,5 +128,19 @@ def help():
     
 def scrape():
     import requests
-    import bs4
-    response = requests.get('http://econpy.pythonanywhere.com/ex/001.html')
+    from BeautifulSoup import BeautifulSoup
+    html = requests.get('http://econpy.pythonanywhere.com/ex/001.html')
+    tree = BeautifulSoup(html.text)
+    
+    buyers = []
+    prices = []
+    
+    for i in tree.findAll('div', title = 'buyer-name'):
+        buyers.append(i.string)
+    pass
+    
+    for i in tree.findAll('span', 'item-price'):
+        prices.append(i.string)
+    pass
+    
+    return dict(buyers = buyers, prices = prices)
