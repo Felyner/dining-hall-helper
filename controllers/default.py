@@ -89,7 +89,7 @@ def api():
 
 
 
-def getSnaps():
+def snaps():
     # Snaps for requested DH
     query = (db.snap.DH == request.args[0])
     snaps = db(query).select(db.snap.ALL, orderby=~db.snap.helpful)
@@ -107,40 +107,49 @@ def getSnaps():
     
     response.view = 'default/snaps.html'
     return dict(snaps = snaps, cowellRatings=cowellRatings, crownRatings=crownRatings,
-                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings)
+                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0])
 
+def ratings():
+    query = (db.rating.DH == request.args[0])
+    ratings = db(query).select(db.rating.ALL)
+    
+    query = (db.rating.DH == "cowell")
+    cowellRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "crown")
+    crownRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "porter")
+    porterRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "eight")
+    eightRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "nine")
+    nineRatings = db(query).select(db.rating.ALL)
+    
+    response.view = 'default/ratings.html'
+    return dict(ratings = ratings, cowellRatings=cowellRatings, crownRatings=crownRatings,
+                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0])
 
-def submit():
-    # Here is how the input that goes to the iPhone camera looks (ios5 min?)
-    # <input type=file accept="image/*">
-    if(args[0]=="snap"): #not correct
-        form=FORM('Snap:')
-    else: #not correct
-        form=FORM('Rating:')
-    pass
+def menu():
+    query = (db.dish.DH == request.args[0] and db.dish.meal == request.args[1])
+    dishes = db(query).select(db.dish.ALL)
+    
+    query = (db.rating.DH == "cowell")
+    cowellRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "crown")
+    crownRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "porter")
+    porterRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "eight")
+    eightRatings = db(query).select(db.rating.ALL)
+    query = (db.rating.DH == "nine")
+    nineRatings = db(query).select(db.rating.ALL)
+    
+    response.view = 'default/menu.html'
+    return dict(dishes=dishes, cowellRatings=cowellRatings, crownRatings=crownRatings,
+                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0],
+                meal=request.args[1])
 
 def help():
     query = (db.snap.picture == request.args[0])
     snaps = db(query).select(db.snap.ALL)
     newHelpful = snaps[0].helpful+1
     db(query).update(helpful = newHelpful)
-    
-    
-def scrape():
-    import requests
-    from BeautifulSoup import BeautifulSoup
-    html = requests.get('http://econpy.pythonanywhere.com/ex/001.html')
-    tree = BeautifulSoup(html.text)
-    
-    buyers = []
-    prices = []
-    
-    for i in tree.findAll('div', title = 'buyer-name'):
-        buyers.append(i.string)
-    pass
-    
-    for i in tree.findAll('span', 'item-price'):
-        prices.append(i.string)
-    pass
-    
-    return dict(buyers = buyers, prices = prices)
