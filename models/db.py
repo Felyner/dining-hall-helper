@@ -1,6 +1,6 @@
 from gluon.tools import Auth
 from gluon.contrib.login_methods.email_auth import email_auth
-
+import datetime
 db = DAL('sqlite://storage.sqlite')
 
 auth = Auth(db)
@@ -26,7 +26,7 @@ db.define_table(
   'dish',
   Field('name', 'string'),
   Field('DH', 'string', requires=IS_NOT_EMPTY()), #cowell, crown, porter, eight, nine
-  Field('date_served', 'date'),
+  Field('date_served', 'date', default=datetime.datetime(2014, 12, 16)),
   Field('meal', 'string', requires=IS_NOT_EMPTY()) #breakfast, lunch, dinner
   )
   
@@ -67,7 +67,9 @@ db.define_table(
   Field('author', 'reference auth_user', default=auth.user_id)
   )
   
-  
+    
+    
+    
   # I was also thinking it would be cool if we had a friend system so you can see if any of your friends are eating
   #    at any of the DHs. Might be a little clunky though, but if we eventually implemented Facebook logins
   #    (it looks like web2py makes it easy), I think it would be a lot easier. Users could 'check in', and they
