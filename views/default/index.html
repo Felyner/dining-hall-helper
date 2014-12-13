@@ -1,5 +1,5 @@
 <!--Not sure if you needed this: {{=A('Login', _class = 'btn', _href = URL('home'))}}-->
-
+{{import math}}
 {{extend 'layout.html'}}
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
 <h1>Pick a Dining Hall</h1>
@@ -51,7 +51,7 @@
             {{if num == 0:}}
                 No Ratings
             {{else:}}
-               {{avg = math.ceil(total/num*100)/100}}
+                {{avg = math.ceil(total/num*100)/100}}
                 {{=avg}}
             {{pass}}
         </td>
@@ -159,16 +159,13 @@
         
     </tr>
     <tr>
-        <td><button onclick="document.location='{{=URL('getSnaps', args='cowell')}}';" >Cowell/Stevenson</button></td>
-        <td><button onclick="document.location='{{=URL('getSnaps', args='crown')}}';" >Crown/Merill</button></td>
-        <td><button onclick="document.location='{{=URL('getSnaps', args='porter')}}';" >Porter/Kresge</button></td>
-        <td><button onclick="document.location='{{=URL('getSnaps', args='eight')}}';" >Eight/Oakes</button></td>
-        <td><button onclick="document.location='{{=URL('getSnaps', args='nine')}}';" >Nine/Ten</button></td>
+        <td><button onclick="document.location='{{=URL('snaps', args='cowell')}}';" >Cowell/Stevenson</button></td>
+        <td><button onclick="document.location='{{=URL('snaps', args='crown')}}';" >Crown/Merill</button></td>
+        <td><button onclick="document.location='{{=URL('snaps', args='porter')}}';" >Porter/Kresge</button></td>
+        <td><button onclick="document.location='{{=URL('snaps', args='eight')}}';" >Eight/Oakes</button></td>
+        <td><button onclick="document.location='{{=URL('snaps', args='nine')}}';" >Nine/Ten</button></td>
     </tr>
 </table>
-
-<button onclick="document.location='{{=URL('submit', args="snap")}}';">Submit Snap</button>
-<button onclick="document.location='{{=URL('submit', args="rating")}}';">Submit Rating</button>
 
 
 <!--{{=BEAUTIFY(response._vars)}}-->
