@@ -1,0 +1,205 @@
+{{extend 'layout.html'}}
+{{import math}}
+<link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
+<h1>Pick a Dining Hall</h1>
+<table>
+    <tr>
+        <th><img src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" align="left" /></th>
+        <th><img src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" align="left" /></th>
+        <th><img src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" align="left" /></th>
+        <th><img src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" align="left" /></th>
+        <th><img src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" align="left" /></th>
+        
+    </tr>
+    <tr>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in cowellRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in crownRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in porterRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in eightRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{=total/num}}
+            {{pass}}
+        </td>
+        <td>Quality: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in nineRatings:}}
+                {{total += rate.quality}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        
+    </tr>
+    <tr>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in cowellRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in crownRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in porterRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in eightRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        <td>Business: 
+            {{total=0}}
+            {{num=0}}
+            {{for rate in nineRatings:}}
+                {{total += rate.business}}
+                {{num += 1}}
+            {{pass}}
+            {{if num == 0:}}
+                No Ratings
+            {{else:}}
+                {{avg = math.ceil(total/num*100)/100}}
+                {{=avg}}
+            {{pass}}
+        </td>
+        
+    </tr>
+    <tr>
+        <td><button onclick="document.location='{{=URL('ratings', args='cowell')}}';" >Cowell/Stevenson</button></td>
+        <td><button onclick="document.location='{{=URL('ratings', args='crown')}}';" >Crown/Merill</button></td>
+        <td><button onclick="document.location='{{=URL('ratings', args='porter')}}';" >Porter/Kresge</button></td>
+        <td><button onclick="document.location='{{=URL('ratings', args='eight')}}';" >Eight/Oakes</button></td>
+        <td><button onclick="document.location='{{=URL('ratings', args='nine')}}';" >Nine/Ten</button></td>
+    </tr>
+</table>
+
+<button onclick="document.location='{{=URL('snaps', args=dh)}}';" >Snaps</button>
+<button onclick="document.location='{{=URL('ratings', args=dh)}}';" >Ratings</button>
+<button onclick="document.location='{{=URL('menu', args=[dh, 'breakfast'])}}';" >Menus</button>
+
+<h1>
+{{count=0}}
+{{for rating in ratings:}}
+{{if count == 0:}}
+{{=rating.DH.title()}} Ratings
+{{count=1}}
+{{pass}}</h1>
+
+    
+
+<div id="ratingDiv">
+    
+    {{if rating.time_posted.hour > 13:}}
+        {{=rating.time_posted.hour-12}}:{{=rating.time_posted.minute}} PM
+    {{elif rating.time_posted.hour < 12:}}
+        {{=rating.time_posted.hour-12}}:{{=rating.time_posted.minute}} AM
+    {{else:}}
+        {{=rating.time_posted.hour-12}}:{{=rating.time_posted.minute}} PM
+    {{pass}}
+    
+    {{=rating.author.first_name}}
+    {{=rating.author.last_name}}
+    <br>
+    &nbsp&nbsp&nbsp&nbsp{{=rating.comments}}
+    <br>
+    Quality: {{=rating.quality}} Business: {{=rating.business}}
+    <br><br>
+
+</div>
+
+
+{{pass}}
+
+{{=BEAUTIFY(response._vars)}}
