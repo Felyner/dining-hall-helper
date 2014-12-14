@@ -57,7 +57,17 @@ db.define_table('ratings', Field('dh_name', 'string'),
                            Field('comment', 'text'),
                            Field('user', 'reference auth_user', default = db.auth_user),
                            Field('date', 'datetime', default = request.now))
-
+#Created using Massimo Dipierro's FacebookClone application
+#https://github.com/mdipierro/web2py-appliances/blob/master/FacebookClone
+db.define_table('link',
+    Field('source','reference auth_user'),
+    Field('target', 'reference auth_user'),
+    Field('accepted','boolean',default=False))
+User, Link = db.auth_user, db.link
+me, a0, a1 = auth.user_id, request.args(0), request.args(1)
+alphabetical = User.first_name|User.last_name
+def name_of(user): return '%(first_name)s %(last_name)s' % user
+myfriends = db(Link.source==db.auth_user)(Link.accepted==True)
   # I was also thinking it would be cool if we had a friend system so you can see if any of your friends are eating
   #    at any of the DHs. Might be a little clunky though, but if we eventually implemented Facebook logins
   #    (it looks like web2py makes it easy), I think it would be a lot easier. Users could 'check in', and they
