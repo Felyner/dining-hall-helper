@@ -16,6 +16,6 @@
 {{for snap in snaps:}}
     <div class = 'well'>
         <h4>{{=snap.user}} &bull; {{=snap.date.strftime('%b %d')}}</h4>
-        {{=snap.file}}
+        <img width = "200px" src = "{{=URL('download', args = snap.file)}}" />
     </div>
 {{pass}}

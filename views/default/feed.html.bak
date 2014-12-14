@@ -1,0 +1,40 @@
+{{extend 'layout.html'}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+{{if dh == 'cowell':}}
+    <h1>Cowell/Stevenson Ratings</h1>
+{{elif dh == 'crown':}}
+    <h1>Crown/Merrill Ratings</h1>
+{{elif dh == 'porter':}}
+    <h1>Porter/Kresge Ratings</h1>
+{{elif dh == 'eight':}}
+    <h1>Eight/Oakes Ratings</h1>
+{{elif dh == 'nine':}}
+    <h1>Nine/Ten Ratings</h1>
+{{pass}}
+{{=A('Return to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index', args = dh))}}
+<br />
+{{for post in posts:}}
+    <div class = 'panel panel-primary'>
+        <div class = 'panel-heading'>
+            <h4 class = 'panel-title'>{{=post.user}} &bull; {{=post.date.strftime('%b %d')}}</h4>
+        </div>
+        <div class = 'panel-body'>
+            {{if post.rating == None:}}
+                {{if post.file == None:}}
+                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                {{else:}}
+                    <!--<img width = "200px" src = "{{=URL('download', args = post.file)}}" />-->
+                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                {{pass}}
+            {{else:}}
+                <h4>Score: {{=post.rating}}/5</h4>
+                {{if post.file == None:}}
+                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                {{else:}}
+                    <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
+                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                {{pass}}
+            {{pass}}
+        </div>
+    </div>
+{{pass}}

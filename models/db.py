@@ -29,7 +29,14 @@ db.define_table(
   Field('date_served', 'date', default=datetime.datetime(2014, 12, 16)),
   Field('meal', 'string', requires=IS_NOT_EMPTY()) #breakfast, lunch, dinner
   )
-  
+
+# POSTS
+db.define_table('posts', Field('dh_name', 'string'),
+                         Field('comment', 'text'),
+                         Field('rating', 'integer'),
+                         Field('file', 'upload'),
+                         Field('user', 'reference auth_user', default = db.auth_user),
+                         Field('date', 'datetime', default = request.now))
 
 # SNAP
 # My idea for snaps - users in dining hall can take picture of their dish, serving stations, or whatever will

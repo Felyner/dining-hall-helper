@@ -29,6 +29,10 @@ def index():
     return dict(cowellRatings=cowellRatings, crownRatings=crownRatings, porterRatings=porterRatings,
                 eightRatings=eightRatings, nineRatings=nineRatings)
 
+def feed():
+    dh = request.args[0]
+    posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)
+    return locals()
 
 def user():
     """

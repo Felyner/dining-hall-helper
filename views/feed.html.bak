@@ -1,5 +1,4 @@
 {{extend 'layout.html'}}
-<!-- New ratings interface -->
 {{if dh == 'cowell':}}
     <h1>Cowell/Stevenson Snaps</h1>
 {{elif dh == 'crown':}}
@@ -13,9 +12,9 @@
 {{pass}}
 {{=A('Back to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index'))}}
 <br />
-{{for snap in snaps:}}
+{{for post in posts:}}
     <div class = 'well'>
-        <h4>{{=snap.user}} &bull; {{=snap.date.strftime('%b %d')}}</h4>
-        <img width = "200px" src = "{{=URL('download', args = snaps.file)}}" />
+        <h4>{{=post.user}} &bull; {{=post.date.strftime('%b %d')}}</h4>
+        <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
     </div>
 {{pass}}
