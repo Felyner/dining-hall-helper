@@ -1,106 +1,116 @@
 {{extend 'layout.html'}}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
-<h1>Pick a Dining Hall</h1>
+<div class = 'hero-unit'>
+    <h1>Welcome,</h1>
+    <p>
+        It looks like you have found your way to the new Dining Hall Rater application here at UC Santa Cruz. Click below to login or register. If you perfer to get right into it, choose a dining hall further down.
+    </p>
+    <p>
+        {{=A('Get Started', _class = 'btn btn-primary', _href = URL('submit'))}}
+    </p>
+</div>
 <div class = 'container-fluid'>
     <div class = 'row'>
-        <div class = 'col-md-2'>
-            <div class="thumbnail">
-                <img data-src="holder.js/300x300" src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" alt="...">
-                <div class="caption">
-                    <p>
-                        <h6>Cowell/Stevenson</h6>
-                        <small>
-                            Rating: /5
-                            <br />
-                            Comments: {{=cowell_post_total}}
-                            <br /><br />
-                            <em>see what others are saying:</em>
-                        </small>
-                    </p>
-                    <p>
-                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'cowell'))}}
-                    </p>
+        <div class = 'span12'>
+            <div class = 'span2 offset'>
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x300" src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" alt="...">
+                    <div class="caption">
+                        <p>
+                            <h6>Cowell/Stevenson</h6>
+                            <small>
+                                Rating: /5
+                                <br />
+                                Comments: {{=cowell_post_total}}
+                                <br /><br />
+                                <em>see what others are saying:</em>
+                            </small>
+                        </p>
+                        <p>
+                            {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'cowell'))}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class = 'col-md-2'>
-            <div class="thumbnail">
-                <img data-src="holder.js/300x300" src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
-                <div class="caption">
-                    <p>
-                        <h6>Crown/Merrill</h6>
-                        <small>
-                            Rating: /5
-                            <br />
-                            Comments: {{=crown_post_total}}
-                            <br /><br />
-                            <em>see what others are saying:</em>
-                        </small>
-                    </p>
-                    <p>
-                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'crown'))}}
-                    </p>
+            <div class = 'span2'>
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x300" src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                    <div class="caption">
+                        <p>
+                            <h6>Crown/Merrill</h6>
+                            <small>
+                                Rating: /5
+                                <br />
+                                Comments: {{=crown_post_total}}
+                                <br /><br />
+                                <em>see what others are saying:</em>
+                            </small>
+                        </p>
+                        <p>
+                            {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'crown'))}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class = 'col-md-2'>
-            <div class="thumbnail">
-                <img data-src="holder.js/300x300" src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
-                <div class="caption">
-                    <p>
-                        <h6>Porter/Kresge</h6>
-                        <small>
-                            Rating: /5
-                            <br />
-                            Comments: {{=porter_post_total}}
-                            <br /><br />
-                            <em>see what others are saying:</em>
-                        </small>
-                    </p>
-                    <p>
-                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'porter'))}}
-                    </p>
+            <div class = 'span2'>
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x300" src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                    <div class="caption">
+                        <p>
+                            <h6>Porter/Kresge</h6>
+                            <small>
+                                Rating: /5
+                                <br />
+                                Comments: {{=porter_post_total}}
+                                <br /><br />
+                                <em>see what others are saying:</em>
+                            </small>
+                        </p>
+                        <p>
+                            {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'porter'))}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class = 'col-md-2'>
-            <div class="thumbnail">
-                <img data-src="holder.js/300x300" src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
-                <div class="caption">
-                    <p>
-                        <h6>Eight/Oakes</h6>
-                        <small>
-                            Rating: /5
-                            <br />
-                            Comments: {{=eight_post_total}}
-                            <br /><br />
-                            <em>see what others are saying:</em>
-                        </small>
-                    </p>
-                    <p>
-                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'eight'))}}
-                    </p>
+            <div class = 'span2'>
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x300" src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                    <div class="caption">
+                        <p>
+                            <h6>Eight/Oakes</h6>
+                            <small>
+                                Rating: /5
+                                <br />
+                                Comments: {{=eight_post_total}}
+                                <br /><br />
+                                <em>see what others are saying:</em>
+                            </small>
+                        </p>
+                        <p>
+                            {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'eight'))}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class = 'col-md-2'>
-            <div class="thumbnail">
-                <img data-src="holder.js/300x300" src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
-                <div class="caption">
-                    <p>
-                        <h6>Nine/Ten</h6>
-                        <small>
-                            Rating: {{=nine_rating_avg}}/5
-                            <br />
-                            Comments: {{=nine_post_total}}
-                            <br /><br />
-                            <em>see what others are saying:</em>
-                        </small>
-                    </p>
-                    <p>
-                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'nine'))}}
-                    </p>
+            <div class = 'span2'>
+                <div class="thumbnail">
+                    <img data-src="holder.js/300x300" src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                    <div class="caption">
+                        <p>
+                            <h6>Nine/Ten</h6>
+                            <small>
+                                Rating: {{=nine_rating_avg}}/5
+                                <br />
+                                Comments: {{=nine_post_total}}
+                                <br /><br />
+                                <em>see what others are saying:</em>
+                            </small>
+                        </p>
+                        <p>
+                            {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'nine'))}}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
