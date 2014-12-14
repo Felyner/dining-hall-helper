@@ -135,3 +135,42 @@ def help():
     snaps = db(query).select(db.snap.ALL)
     newHelpful = snaps[0].helpful+1
     db(query).update(helpful = newHelpful)
+# Created using Massimo DiPierro's FacebookClone application 
+# https://github.com/mdipierro/web2py-appliances/blob/master/FacebookClone/
+@auth.requires_login()
+def friends():
+    friends = db(User.id==Link.source)(Link.target==me).select(orderby=alphabetical)
+    requests = db(User.id==Link.target)(Link.source==me).select(orderby=alphabetical)
+    return locals()
+
+# this is the Ajax callback
+@auth.requires_login()
+def friendship():
+    """AJAX callback!"""
+    if request.env.request_method!='POST': raise HTTP(400)
+    if a0=='request' and not Link(source=a1,target=me):
+        # insert a new friendship request
+        Link.insert(source=me,target=a1)
+    elif a0=='accept':
+        # accept an existing friendship request
+        db(Link.target==me)(Link.source==a1).update(accepted=True)
+        if not db(Link.source==me)(Link.target==a1).count():
+            Link.insert(source=me,target=a1)
+    elif a0=='deny':
+        # deny an existing friendship request
+        db(Link.target==me)(Link.source==a1).delete()
+    elif a0=='remove':
+        # delete a previous friendship request
+        db(Link.source==me)(Link.target==a1).delete()
+@auth.requires_login()
+def search():
+    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
+    if form.accepts(request):
+        tokens = form.vars.name.split()
+        query = reduce(lambda a,b:a&b,
+                       [User.first_name.contains(k)|User.last_name.contains(k) \
+                            for k in tokens])
+        people = db(query).select(orderby=alphabetical)
+    else:
+        people = []
+    return locals()
