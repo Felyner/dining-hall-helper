@@ -13,6 +13,7 @@
 {{pass}}
 {{=A('Return to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index', args = dh))}}
 <br />
+<br />
 {{for post in posts:}}
     <div class = 'panel panel-primary'>
         <div class = 'panel-heading'>
@@ -23,16 +24,28 @@
                 {{if post.file == None:}}
                     <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
                 {{else:}}
-                    <!--<img width = "200px" src = "{{=URL('download', args = post.file)}}" />-->
-                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                    <div class = 'media'>
+                        <div class = 'media-left'>
+                            <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
+                        </div>
+                        <div class = 'media-body'>
+                            <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                        </div>
+                    </div>
                 {{pass}}
             {{else:}}
                 <h4>Score: {{=post.rating}}/5</h4>
                 {{if post.file == None:}}
                     <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
                 {{else:}}
-                    <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
-                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                    <div class = 'media'>
+                        <div class = 'media-left'>
+                            <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
+                        </div>
+                        <div class = 'media-body'>
+                            <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
+                        </div>
+                    </div>
                 {{pass}}
             {{pass}}
         </div>

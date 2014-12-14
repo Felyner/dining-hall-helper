@@ -1,6 +1,114 @@
 {{extend 'layout.html'}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
 <h1>Pick a Dining Hall</h1>
+
+<div class = 'container-fluid'>
+    <div class = 'row'>
+        <div class = 'col-md-2'>
+            <div class="thumbnail">
+                <img data-src="holder.js/300x300" src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" alt="...">
+                <div class="caption">
+                    <p>
+                        <h6>Cowell/Stevenson</h6>
+                        <small>
+                            Rating: 
+                            <br />
+                            Comments: 
+                            <br /><br />
+                            <em>see what others are saying:</em>
+                        </small>
+                    </p>
+                    <p>
+                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'cowell'))}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-md-2'>
+            <div class="thumbnail">
+                <img data-src="holder.js/300x300" src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                <div class="caption">
+                    <p>
+                        <h6>Cowell/Stevenson</h6>
+                        <small>
+                            Rating: 
+                            <br />
+                            Comments: 
+                            <br /><br />
+                            <em>see what others are saying:</em>
+                        </small>
+                    </p>
+                    <p>
+                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'crown'))}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-md-2'>
+            <div class="thumbnail">
+                <img data-src="holder.js/300x300" src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                <div class="caption">
+                    <p>
+                        <h6>Cowell/Stevenson</h6>
+                        <small>
+                            Rating: 
+                            <br />
+                            Comments: 
+                            <br /><br />
+                            <em>see what others are saying:</em>
+                        </small>
+                    </p>
+                    <p>
+                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'porter'))}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-md-2'>
+            <div class="thumbnail">
+                <img data-src="holder.js/300x300" src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                <div class="caption">
+                    <p>
+                        <h6>Cowell/Stevenson</h6>
+                        <small>
+                            Rating: 
+                            <br />
+                            Comments: 
+                            <br /><br />
+                            <em>see what others are saying:</em>
+                        </small>
+                    </p>
+                    <p>
+                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'eight'))}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-md-2'>
+            <div class="thumbnail">
+                <img data-src="holder.js/300x300" src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
+                <div class="caption">
+                    <p>
+                        <h6>Cowell/Stevenson</h6>
+                        <small>
+                            Rating: 
+                            <br />
+                            Comments: 
+                            <br /><br />
+                            <em>see what others are saying:</em>
+                        </small>
+                    </p>
+                    <p>
+                        {{=A('Click Here', _class = 'btn btn-primary', _href = URL('feed', args = 'nine'))}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
 <table>
     <tr>
         <th><img src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" align="left" /></th>
@@ -39,3 +147,4 @@
         </td>
     </tr>
 </table>
+-->
