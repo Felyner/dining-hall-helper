@@ -7,9 +7,6 @@ auth = Auth(db)
 auth.define_tables()
 auth.settings.login_methods.append(email_auth('smtp.gmail.com:465', '@ucsc.com'))
 
-
-
-
 # Hey I'm throwing out some ideas for tables I think we could use, feel free to make any changes,
 #    I know there should be some more restrictions on the fields.
 
@@ -38,32 +35,6 @@ db.define_table('posts', Field('dh_name', 'string'),
                          Field('user', 'reference auth_user', default = db.auth_user),
                          Field('date', 'datetime', default = request.now))
 
-# SNAP
-# My idea for snaps - users in dining hall can take picture of their dish, serving stations, or whatever will
-#    represent the current state of the DH they are at. These snaps will be put into feeds for the individual DHs,
-#    and they will be sorted by their helpfulness (voted by users, basically "like"s from facebook). Snaps voted down
-#    would be deleted, and snaps would have to be deleted after an hour or so to keep them relevant.
-# Another approach would be to ditch helpfulness (since many snaps will be quite similar, users may not have
-#    incentive to vote on them), and instead include a flagging system for inappropriate/unhelpful pictures. I'm
-#    not sure which approach would be best.
-db.define_table('snaps', Field('dh_name', 'string'),
-                         Field('file', 'upload'),
-                         Field('description', 'string', length = 25),
-                         Field('user', 'reference auth_user', default = db.auth_user),
-                         Field('date', 'datetime', default = request.now))
-
-# RATING
-# Users could rate dining hall on quality and business, and on main screen of app with all 5
-#    DHs listed, alongside could be their average ratings, for a quick comparison between the DHs.
-#    Ratings would probably expire at the same rate that snaps do.
-# It would also be interesting to collect data from ratings - which dining halls are the best, which are
-#    the best at specific times, days of the week, times of the year, do students grow tired of the food,
-#    which DHs improve/weaken, etc.
-db.define_table('ratings', Field('dh_name', 'string'),
-                           Field('score', 'integer'),
-                           Field('comment', 'text'),
-                           Field('user', 'reference auth_user', default = db.auth_user),
-                           Field('date', 'datetime', default = request.now))
 #Created using Massimo Dipierro's FacebookClone application
 #https://github.com/mdipierro/web2py-appliances/blob/master/FacebookClone
 db.define_table('link',

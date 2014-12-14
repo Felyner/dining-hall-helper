@@ -404,3 +404,10 @@
 [2014-12-14 00:55:00] EDIT dining_hall_helper/views/default/feed.html: 0
 [2014-12-14 00:55:10] EDIT dining_hall_helper/controllers/default.py: 0
 [2014-12-14 00:55:13] EDIT dining_hall_helper/models/db.py: 0
+[2014-12-14 01:05:45] EDIT dining_hall_helper/controllers/default.py: -25
+[2014-12-14 01:06:03] DELETE dining_hall_helper/views/default/ratings.html: -22
+[2014-12-14 01:06:11] DELETE dining_hall_helper/views/default/snaps.html: -21
+[2014-12-14 01:07:21] EDIT dining_hall_helper/models/db.py: -10
+[2014-12-14 01:08:53] EDIT dining_hall_helper/controllers/default.py: 0
+[2014-12-14 01:09:18] EDIT dining_hall_helper/controllers/default.py: 0
+[2014-12-14 01:09:20] EDIT dining_hall_helper/models/db.py: 0

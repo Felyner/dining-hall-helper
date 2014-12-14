@@ -360,3 +360,22 @@ success!
 success!
 success!
 success!
+success!
+timestamp: 2014-12-14T01:01:03.095780
+CREATE TABLE link(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    target INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    accepted CHAR(1)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
