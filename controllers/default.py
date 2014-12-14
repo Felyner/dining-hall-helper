@@ -10,24 +10,65 @@
 #########################################################################
 
 def index():
-    
-    # Ratings for all DHs
-    # Do some math here to generate the average rating for each dining hall
-    query = (db.posts.dh_name == "cowell")
-    cowellRatings = db(query).select(db.posts.ALL)
-    query = (db.posts.dh_name == "crown")
-    crownRatings = db(query).select(db.posts.ALL)
-    query = (db.posts.dh_name == "porter")
-    porterRatings = db(query).select(db.posts.ALL)
-    query = (db.posts.dh_name == "eight")
-    eightRatings = db(query).select(db.posts.ALL)
-    query = (db.posts.dh_name == "nine")
-    nineRatings = db(query).select(db.posts.ALL)
-    
-    
-    
-    return dict(cowellRatings=cowellRatings, crownRatings=crownRatings, porterRatings=porterRatings,
-                eightRatings=eightRatings, nineRatings=nineRatings)
+    # Trying to get average ratings. Be careful for divide-by-zero errors
+    # with dining halls which have no ratings
+    cowell_posts = db(db.posts.dh_name == 'cowell').select(db.posts.ALL)
+    cowell_post_total = 0
+    cowell_rating_total = 0
+    rating_total = 0
+    for post in cowell_posts:
+        if post.rating != None:
+            rating_total += int(post.rating)
+            ++cowell_rating_total
+        pass
+        cowell_post_total += 1
+    pass
+    crown_posts = db(db.posts.dh_name == 'crown').select(db.posts.ALL)
+    crown_post_total = 0
+    crown_rating_total = 0
+    rating_total = 0
+    for post in crown_posts:
+        if post.rating != None:
+            rating_total += int(post.rating)
+            ++crown_rating_total
+        pass
+        crown_post_total += 1
+    pass
+    porter_posts = db(db.posts.dh_name == 'porter').select(db.posts.ALL)
+    porter_post_total = 0
+    porter_rating_total = 0
+    rating_total = 0
+    for post in porter_posts:
+        if post.rating != None:
+            rating_total += int(post.rating)
+            ++porter_rating_total
+        pass
+        porter_post_total += 1
+    pass
+    eight_posts = db(db.posts.dh_name == 'eight').select(db.posts.ALL)
+    eight_post_total = 0
+    eight_rating_total = 0
+    rating_total = 0
+    for post in eight_posts:
+        if post.rating != None:
+            rating_total += int(post.rating)
+            ++eight_rating_total
+        pass
+        eight_post_total += 1
+    pass
+    nine_posts = db(db.posts.dh_name == 'nine').select(db.posts.ALL)
+    nine_post_total = 0
+    nine_rating_total = 0
+    rating_total = 0
+    for post in nine_posts:
+        if post.rating != None:
+            rating_total += post.rating
+            ++nine_rating_total
+        pass
+        nine_post_total += 1
+    pass
+    nine_rating_avg = nine_rating_total / rating_total
+    return locals()
 
 def feed():
     dh = request.args[0]

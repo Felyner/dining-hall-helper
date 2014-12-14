@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
 <h1>Pick a Dining Hall</h1>
-
 <div class = 'container-fluid'>
     <div class = 'row'>
         <div class = 'col-md-2'>
@@ -12,9 +11,9 @@
                     <p>
                         <h6>Cowell/Stevenson</h6>
                         <small>
-                            Rating: 
+                            Rating: /5
                             <br />
-                            Comments: 
+                            Comments: {{=cowell_post_total}}
                             <br /><br />
                             <em>see what others are saying:</em>
                         </small>
@@ -30,11 +29,11 @@
                 <img data-src="holder.js/300x300" src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
                 <div class="caption">
                     <p>
-                        <h6>Cowell/Stevenson</h6>
+                        <h6>Crown/Merrill</h6>
                         <small>
-                            Rating: 
+                            Rating: /5
                             <br />
-                            Comments: 
+                            Comments: {{=crown_post_total}}
                             <br /><br />
                             <em>see what others are saying:</em>
                         </small>
@@ -50,11 +49,11 @@
                 <img data-src="holder.js/300x300" src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
                 <div class="caption">
                     <p>
-                        <h6>Cowell/Stevenson</h6>
+                        <h6>Porter/Kresge</h6>
                         <small>
-                            Rating: 
+                            Rating: /5
                             <br />
-                            Comments: 
+                            Comments: {{=porter_post_total}}
                             <br /><br />
                             <em>see what others are saying:</em>
                         </small>
@@ -70,11 +69,11 @@
                 <img data-src="holder.js/300x300" src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
                 <div class="caption">
                     <p>
-                        <h6>Cowell/Stevenson</h6>
+                        <h6>Eight/Oakes</h6>
                         <small>
-                            Rating: 
+                            Rating: /5
                             <br />
-                            Comments: 
+                            Comments: {{=eight_post_total}}
                             <br /><br />
                             <em>see what others are saying:</em>
                         </small>
@@ -90,11 +89,11 @@
                 <img data-src="holder.js/300x300" src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" style="width:160px;height:128px;" alt="...">
                 <div class="caption">
                     <p>
-                        <h6>Cowell/Stevenson</h6>
+                        <h6>Nine/Ten</h6>
                         <small>
-                            Rating: 
+                            Rating: {{=nine_rating_avg}}/5
                             <br />
-                            Comments: 
+                            Comments: {{=nine_post_total}}
                             <br /><br />
                             <em>see what others are saying:</em>
                         </small>
@@ -107,44 +106,3 @@
         </div>
     </div>
 </div>
-
-<!--
-<table>
-    <tr>
-        <th><img src="http://cowell.ucsc.edu/images/fountain_quad.jpg?t=0" style="width:160px;height:128px;" align="left" /></th>
-        <th><img src="http://crown.ucsc.edu/academics/images/Crown%20Library.jpg" style="width:160px;height:128px;" align="left" /></th>
-        <th><img src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" align="left" /></th>
-        <th><img src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" align="left" /></th>
-        <th><img src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" align="left" /></th>
-    </tr>
-    <tr>
-    </tr>
-    <tr>
-        <td>
-            <h6>Rating: </h6>
-            <h6>Snaps: </h6>
-            {{=A('Cowell/Stevenson', _class = 'btn btn-primary', _href = URL('feed', args = 'cowell'))}}
-        </td>
-        <td>
-            <h6>Rating: </h6>
-            <h6>Snaps: </h6>
-            {{=A('Crown/Merrill', _class = 'btn btn-primary', _href = URL('feed', args = 'crown'))}}
-        </td>
-        <td>
-            <h6>Rating: </h6>
-            <h6>Snaps: </h6>
-            {{=A('Porter/Kresge', _class = 'btn btn-primary', _href = URL('feed', args = 'porter'))}}
-        </td>
-        <td>
-            <h6>Rating: </h6>
-            <h6>Snaps: </h6>
-            {{=A('Eight/Oakes', _class = 'btn btn-primary', _href = URL('feed', args = 'eight'))}}
-        </td>
-        <td>
-            <h6>Rating: </h6>
-            <h6>Snaps: </h6>
-            {{=A('Nine/Ten', _class = 'btn btn-primary', _href = URL('feed', args = 'nine'))}}
-        </td>
-    </tr>
-</table>
--->
