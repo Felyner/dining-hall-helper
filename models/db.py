@@ -39,16 +39,11 @@ db.define_table(
 # Another approach would be to ditch helpfulness (since many snaps will be quite similar, users may not have
 #    incentive to vote on them), and instead include a flagging system for inappropriate/unhelpful pictures. I'm
 #    not sure which approach would be best.
-db.define_table(
-  'snap',
-  Field('picture', 'upload', uploadfield='picture_file'),
-  Field('picture_file', 'blob'),
-  Field('author', 'reference auth_user', default=auth.user_id), # is this formatted right?
-  Field('helpful', 'integer'),
-  Field('DH', 'string'),
-  Field('time_posted', 'datetime', default=request.now)
-  )
-  
+db.define_table('snaps', Field('dh_name', 'string'),
+                         Field('file', 'upload'),
+                         Field('description', 'string', length = 25),
+                         Field('user', 'reference auth_user', default = db.auth_user),
+                         Field('date', 'datetime', default = request.now))
 
 # RATING
 # Users could rate dining hall on quality and business, and on main screen of app with all 5
@@ -57,19 +52,12 @@ db.define_table(
 # It would also be interesting to collect data from ratings - which dining halls are the best, which are
 #    the best at specific times, days of the week, times of the year, do students grow tired of the food,
 #    which DHs improve/weaken, etc.
-db.define_table(
-  'rating',
-  Field('quality', 'double'), # 1-5?
-  Field('business', 'double'), # 1-5?
-  Field('DH', 'string'),
-  Field('time_posted', 'datetime', default=request.now),
-  Field('comments', 'text'),
-  Field('author', 'reference auth_user', default=auth.user_id)
-  )
-  
-    
-    
-    
+db.define_table('ratings', Field('dh_name', 'string'),
+                           Field('score', 'integer'),
+                           Field('comment', 'text'),
+                           Field('user', 'reference auth_user', default = db.auth_user),
+                           Field('date', 'datetime', default = request.now))
+
   # I was also thinking it would be cool if we had a friend system so you can see if any of your friends are eating
   #    at any of the DHs. Might be a little clunky though, but if we eventually implemented Facebook logins
   #    (it looks like web2py makes it easy), I think it would be a lot easier. Users could 'check in', and they

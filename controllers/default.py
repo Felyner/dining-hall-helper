@@ -10,26 +10,19 @@
 #########################################################################
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    #response.flash = T("Welcome to web2py!")
     
     # Ratings for all DHs
-    query = (db.rating.DH == "cowell")
-    cowellRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "crown")
-    crownRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "porter")
-    porterRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "eight")
-    eightRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "nine")
-    nineRatings = db(query).select(db.rating.ALL)
+    # Do some math here to generate the average rating for each dining hall
+    query = (db.ratings.dh_name == "cowell")
+    cowellRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "crown")
+    crownRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "porter")
+    porterRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "eight")
+    eightRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "nine")
+    nineRatings = db(query).select(db.ratings.ALL)
     
     
     
@@ -90,26 +83,15 @@ def api():
 
 
 def snaps():
-    # Snaps for requested DH
-    query = (db.snap.DH == request.args[0])
-    snaps = db(query).select(db.snap.ALL, orderby=~db.snap.helpful)
-    # Ratings for all DHs
-    query = (db.rating.DH == "cowell")
-    cowellRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "crown")
-    crownRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "porter")
-    porterRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "eight")
-    eightRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "nine")
-    nineRatings = db(query).select(db.rating.ALL)
-    
-    response.view = 'default/snaps.html'
-    return dict(snaps = snaps, cowellRatings=cowellRatings, crownRatings=crownRatings,
-                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0])
+    dh = request.args[0]
+    snaps = db(db.snaps.dh_name == dh).select(db.snaps.ALL, orderby =~ db.snaps.date)
+    return locals()
 
 def ratings():
+    dh = request.args[0]
+    ratings = db(db.ratings.dh_name == dh).select(db.ratings.ALL, orderby =~ db.ratings.date)
+    return locals()
+    '''
     query = (db.rating.DH == request.args[0])
     ratings = db(query).select(db.rating.ALL)
     
@@ -127,21 +109,21 @@ def ratings():
     response.view = 'default/ratings.html'
     return dict(ratings = ratings, cowellRatings=cowellRatings, crownRatings=crownRatings,
                 porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0])
-
+    '''
 def menu():
     query = (db.dish.DH == request.args[0] and db.dish.meal == request.args[1])
     dishes = db(query).select(db.dish.ALL)
     
-    query = (db.rating.DH == "cowell")
-    cowellRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "crown")
-    crownRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "porter")
-    porterRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "eight")
-    eightRatings = db(query).select(db.rating.ALL)
-    query = (db.rating.DH == "nine")
-    nineRatings = db(query).select(db.rating.ALL)
+    query = (db.ratings.dh_name == "cowell")
+    cowellRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "crown")
+    crownRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "porter")
+    porterRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "eight")
+    eightRatings = db(query).select(db.ratings.ALL)
+    query = (db.ratings.dh_name == "nine")
+    nineRatings = db(query).select(db.ratings.ALL)
     
     response.view = 'default/menu.html'
     return dict(dishes=dishes, cowellRatings=cowellRatings, crownRatings=crownRatings,

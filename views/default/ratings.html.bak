@@ -11,7 +11,7 @@
 {{elif dh == 'nine':}}
     <h1>Nine/Ten Ratings</h1>
 {{pass}}
-{{=A('Return to Menu', _class = 'btn btn-primary', _href = URL('menu', args = dh))}}
+{{=A('Return to Menu', _class = 'btn btn-primary', _href = URL('menu'))}}
 <br />
 {{for rating in ratings:}}
     <div class = 'well'>

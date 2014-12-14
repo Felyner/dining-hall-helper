@@ -11,7 +11,7 @@
 {{elif dh == 'nine':}}
     <h1>Nine/Ten Snaps</h1>
 {{pass}}
-{{=A('Back to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index'))}}
+{{=A('Back to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('menu', args = dh))}}
 <br />
 {{for snap in snaps:}}
     <div class = 'well'>

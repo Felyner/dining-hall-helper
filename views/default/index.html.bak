@@ -1,5 +1,3 @@
-<!--Not sure if you needed this: {{=A('Login', _class = 'btn', _href = URL('home'))}}-->
-{{import math}}
 {{extend 'layout.html'}}
 <link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
 <h1>Pick a Dining Hall</h1>
@@ -10,162 +8,34 @@
         <th><img src="http://news.ucsc.edu/2009/08/images/porter_sculpture.jpg" style="width:160px;height:128px;" align="left" /></th>
         <th><img src="https://farm1.staticflickr.com/187/396727677_54031e8ff9.jpg" style="width:160px;height:128px;" align="left" /></th>
         <th><img src="http://en.academic.ru/pictures/enwiki/67/College_9.jpg" style="width:160px;height:128px;" align="left" /></th>
-        
     </tr>
     <tr>
-        <td>Quality: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in cowellRatings:}}
-                {{total += rate.quality}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
-        </td>
-        <td>Quality: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in crownRatings:}}
-                {{total += rate.quality}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
-        </td>
-        <td>Quality: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in porterRatings:}}
-                {{total += rate.quality}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
-        </td>
-        <td>Quality: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in eightRatings:}}
-                {{total += rate.quality}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
-        </td>
-        <td>Quality: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in nineRatings:}}
-                {{total += rate.quality}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
-        </td>
-        
     </tr>
     <tr>
-        <td>Business: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in cowellRatings:}}
-                {{total += rate.business}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
+        <td>
+            <h6>Rating: </h6>
+            <h6>Snaps: </h6>
+            {{=A('Cowell/Stevenson', _class = 'btn btn-primary', _href = URL('snaps', args = 'cowell'))}}
         </td>
-        <td>Business: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in crownRatings:}}
-                {{total += rate.business}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
+        <td>
+            <h6>Rating: </h6>
+            <h6>Snaps: </h6>
+            {{=A('Crown/Merrill', _class = 'btn btn-primary', _href = URL('snaps', args = 'crown'))}}
         </td>
-        <td>Business: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in porterRatings:}}
-                {{total += rate.business}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
+        <td>
+            <h6>Rating: </h6>
+            <h6>Snaps: </h6>
+            {{=A('Porter/Kresge', _class = 'btn btn-primary', _href = URL('snaps', args = 'porter'))}}
         </td>
-        <td>Business: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in eightRatings:}}
-                {{total += rate.business}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
+        <td>
+            <h6>Rating: </h6>
+            <h6>Snaps: </h6>
+            {{=A('Eight/Oakes', _class = 'btn btn-primary', _href = URL('snaps', args = 'eight'))}}
         </td>
-        <td>Business: 
-            {{total=0}}
-            {{num=0}}
-            {{for rate in nineRatings:}}
-                {{total += rate.business}}
-                {{num += 1}}
-            {{pass}}
-            {{if num == 0:}}
-                No Ratings
-            {{else:}}
-                {{avg = math.ceil(total/num*100)/100}}
-                {{=avg}}
-            {{pass}}
+        <td>
+            <h6>Rating: </h6>
+            <h6>Snaps: </h6>
+            {{=A('Nine/Ten', _class = 'btn btn-primary', _href = URL('snaps', args = 'nine'))}}
         </td>
-        
-    </tr>
-    <tr>
-        <td><button onclick="document.location='{{=URL('snaps', args='cowell')}}';" >Cowell/Stevenson</button></td>
-        <td><button onclick="document.location='{{=URL('snaps', args='crown')}}';" >Crown/Merrill</button></td>
-        <td><button onclick="document.location='{{=URL('snaps', args='porter')}}';" >Porter/Kresge</button></td>
-        <td><button onclick="document.location='{{=URL('snaps', args='eight')}}';" >Eight/Oakes</button></td>
-        <td><button onclick="document.location='{{=URL('snaps', args='nine')}}';" >Nine/Ten</button></td>
     </tr>
 </table>
-
-
-<!--{{=BEAUTIFY(response._vars)}}-->

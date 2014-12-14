@@ -103,3 +103,161 @@ CREATE TABLE rating(
     author INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
 );
 success!
+timestamp: 2014-12-13T20:57:41.352096
+CREATE TABLE ratings(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dh_name CHAR(512),
+    score INTEGER,
+    comment TEXT,
+    user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    time_posted TIMESTAMP
+);
+success!
+timestamp: 2014-12-13T20:58:22.252447
+ALTER TABLE ratings ADD date TIMESTAMP;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2014-12-13T22:44:41.675155
+CREATE TABLE snaps(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file CHAR(512),
+    description CHAR(25),
+    user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    date TIMESTAMP
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2014-12-13T22:52:00.464268
+ALTER TABLE snaps ADD dh_name CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
