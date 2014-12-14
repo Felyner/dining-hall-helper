@@ -259,3 +259,6 @@
 [2014-12-04 14:39:09] EDIT dining_hall_helper/views/default/scrape.html: 1
 [2014-12-04 14:39:21] EDIT dining_hall_helper/views/default/scrape.html: 1
 [2014-12-04 14:39:31] EDIT dining_hall_helper/views/default/scrape.html: 0
+[2014-12-13 20:12:58] EDIT dining_hall_helper/views/default/index.html: 0
+[2014-12-13 20:13:15] EDIT dining_hall_helper/views/default/index.html: 0
+[2014-12-13 20:14:42] DELETE dining_hall_helper/views/default/scrape.html: -3
