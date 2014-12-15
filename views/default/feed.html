@@ -1,5 +1,22 @@
 {{extend 'layout.html'}}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<link href="{{=URL('static', 'css/style.css')}}" rel="stylesheet" type="text/css" />
+<script src="{{=URL('static','js/Posting.js')}}"></script>
+<script src="{{=URL('static','js/arrow.js')}}"></script>
+<script src="{{=URL('static','js/FoodPic.js')}}"></script>
+<script src="{{=URL('static','js/mainPost.js')}}"></script>
+<script defer src="{{=URL('static','js/main.js')}}"></script>
+<script>
+function Posting(user, time, comment, image, rating) {
+    this.user = user;
+    this.time = time;
+    this.comment = comment;
+    this.image = image;
+    this.rating = rating;
+}
+</script>
+
 {{if dh == 'cowell':}}
     <h1>Cowell/Stevenson Ratings</h1>
 {{elif dh == 'crown':}}
@@ -11,49 +28,54 @@
 {{elif dh == 'nine':}}
     <h1>Nine/Ten Ratings</h1>
 {{pass}}
+
+<script>document.postObjs = [];
+</script>
+<div id="data" class="hidden">
+{{for post in posts:}}
+
+    <p id="user" class="hidden">{{=post.user.first_name}} {{=post.user.last_name}}</p>
+    <p id="time" class="hidden">{{=post.date.strftime('%b %d %I:%M')}}</p>
+    <p id="rating" class="hidden">{{=post.rating}}</p>
+    <p id="comment" class="hidden">{{=post.comment}}</p>
+    <img id="image" class="hidden" width = "30%" src = "{{=URL('download', args=post.file) }}" />
+
+
+<script>
+    var user = document.getElementById("user").innerHTML;
+    var time = document.getElementById("time").innerHTML;
+    var rating = document.getElementById("rating").innerHTML;
+    var comment = document.getElementById("comment").innerHTML;
+    var image = document.getElementById("image");
+    
+    
+    var obj = new Posting(user, time, comment, image, rating);
+    document.postObjs.push(obj);
+    
+    var parent = document.getElementById("data");
+    var child = document.getElementById("user");
+    parent.removeChild(child);
+    
+    child = document.getElementById("time");
+    parent.removeChild(child);
+    
+    child = document.getElementById("rating");
+    parent.removeChild(child);
+    
+    child = document.getElementById("comment");
+    parent.removeChild(child);
+    
+    child = document.getElementById("image");
+    parent.removeChild(child);
+</script>
+
+{{pass}}
+</div>
+
+<canvas id="canvas1" width="960" height="640"></canvas>
+
 {{=A('Return to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index'))}}
 {{=A('Rate This Dining Hall', _class = 'btn btn-primary', _href = URL('new_post', args = dh))}}
 <br />
 <br />
-<div class = 'container'>
-    <div class = 'col-md-10 col-md-offset-1'>
-        {{for post in posts:}}
-            <div class = 'panel panel-primary'>
-                <div class = 'panel-heading'>
-                    <h4 class = 'panel-title'>{{=post.user}} &bull; {{=post.date.strftime('%b %d')}}</h4>
-                </div>
-                <div class = 'panel-body'>
-                    {{if post.rating == None:}}
-                        {{if post.file == None:}}
-                            <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
-                        {{else:}}
-                            <div class = 'media'>
-                                <div class = 'media-left'>
-                                    <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
-                                </div>
-                                <div class = 'media-body'>
-                                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
-                                </div>
-                            </div>
-                        {{pass}}
-                    {{else:}}
-                        <h4>Score: {{=post.rating}}/5</h4>
-                        {{if post.file == None:}}
-                            <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
-                        {{else:}}
-                            <div class = 'media'>
-                                <div class = 'media-left'>
-                                    <img width = "200px" src = "{{=URL('download', args = post.file)}}" />
-                                </div>
-                                <div class = 'media-body'>
-                                    <p style = 'text-indent: 2em;'>{{=post.comment}}</p>
-                                </div>
-                            </div>
-                        {{pass}}
-                    {{pass}}
-                </div>
-            </div>
-        {{pass}}
-        </div>
-    </div>
-</div>
+
