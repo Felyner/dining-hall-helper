@@ -87,7 +87,8 @@ def friendfeed():
 
 def feed():
     dh = request.args[0]
-    posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)
+    query = (db.posts.dh_name == dh)
+    posts = db(query).select(db.posts.ALL, orderby =~ db.posts.date)
     return locals()
 
 def new_post():
