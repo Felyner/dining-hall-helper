@@ -122,18 +122,15 @@ function FoodPic(x, y, xPos, yPos, width, height, img, name, time, comment, scor
             var words = this.comment.split(" ");
             var lineNum = 0;
             var lines = [];
+            var count=0;
             lines[0] = this.comment;
-            /*for(var i=0; i < words.length; i++) {
-                var word = words[i];
-                if(this.getLength(lines[lineNum])+word.length+1 < 30) {
-                    lines[lineNum].push(word);
-                } else {
-                    lineNum++;
-                    lines[lineNum].push(word);
-                }
-            }*/
-            context.fillText("Comments: " + lines[0], this.x+15, this.y+85);
-            context.fillText("Score: " + this.score + "/5", this.x+15, this.y+115);
+            
+            context.fillText("Comments: ", this.x+15, this.y+135);
+            context.fillText(this.comment, this.x+15, this.y+160);
+            for(var i=0; i<lineNum; i++) {
+                context.fillText(lines[i], this.x+15, this.y+160+(i*15));
+            }
+            context.fillText("Score: " + this.score + "/5", this.x+15, this.y+200+(lineNum*15));
             /*for(var i=1; i < this.lines.length; i++)
                 context.fillText(this.lines[i], this.x+25, this.y+105+(i*20));*/
             
