@@ -7,7 +7,7 @@
         It looks like you have found your way to the new Dining Hall Rater application here at UC Santa Cruz. Click below to login or register. If you perfer to get right into it, choose a dining hall further down.
     </p>
     <p>
-        {{=A('Get Started', _class = 'btn btn-primary', _href = URL('submit'))}}
+        {{=A('Get Started', _class = 'btn btn-primary', _href = URL('friendfeed'))}}
     </p>
 </div>
 <div class = 'container-fluid'>
@@ -20,7 +20,7 @@
                         <p>
                             <h6>Cowell/Stevenson</h6>
                             <small>
-                                Rating: /5
+                                Rating: {{=cowell_rating_avg}}/5
                                 <br />
                                 Comments: {{=cowell_post_total}}
                                 <br /><br />
@@ -40,7 +40,7 @@
                         <p>
                             <h6>Crown/Merrill</h6>
                             <small>
-                                Rating: /5
+                                Rating: {{=crown_rating_avg}}/5
                                 <br />
                                 Comments: {{=crown_post_total}}
                                 <br /><br />
@@ -60,7 +60,7 @@
                         <p>
                             <h6>Porter/Kresge</h6>
                             <small>
-                                Rating: /5
+                                Rating: {{=porter_rating_avg}}/5
                                 <br />
                                 Comments: {{=porter_post_total}}
                                 <br /><br />
@@ -80,7 +80,7 @@
                         <p>
                             <h6>Eight/Oakes</h6>
                             <small>
-                                Rating: /5
+                                Rating: {{=eight_rating_avg}}/5
                                 <br />
                                 Comments: {{=eight_post_total}}
                                 <br /><br />

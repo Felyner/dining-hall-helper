@@ -28,7 +28,7 @@ db.define_table(
   )
 
 # POSTS
-db.define_table('posts', Field('dh_name', 'string'),
+db.define_table('posts', Field('dh_name', 'string', required = True),
                          Field('comment', 'text', required = True),
                          Field('rating', 'integer'),
                          Field('file', 'upload'),
@@ -37,7 +37,7 @@ db.define_table('posts', Field('dh_name', 'string'),
 
 db.posts.rating.requires >= 0
 db.posts.rating.requires <= 5
-db.posts.dh_name.readable = db.posts.dh_name.writable = False
+#db.posts.dh_name.readable = db.posts.dh_name.writable = False
 db.posts.user.readable = db.posts.user.writable = False
 db.posts.date.readable = db.posts.date.writable = False
 

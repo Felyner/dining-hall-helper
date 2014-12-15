@@ -73,6 +73,7 @@ def index():
     pass
     nine_rating_avg = nine_rating_total / rating_total
     return locals()
+
 @auth.requires_login()
 def friendfeed():
     db.posts.user.default = me
@@ -83,12 +84,14 @@ def friendfeed():
     friends = [row.target for row in db(Link.source==me)(Link.accepted==True).select(Link.target)]
     posts = db(db.posts.user.belongs(friends)).select(orderby=~db.posts.date,limitby=(0,100))
     return locals()
+
 def feed():
     dh = request.args[0]
     posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)
     return locals()
 
 def new_post():
+    # Need help automatically filling dh_name field based on argument
     dh = request.args[0]
     form = SQLFORM(db.posts).process(next = URL('feed', args = dh))
     return locals()

@@ -667,3 +667,11 @@
 [2014-12-14 17:07:51] EDIT dining_hall_rater/controllers/default.py: 0
 [2014-12-14 17:12:19] EDIT dining_hall_rater/models/db.py: 5
 [2014-12-14 17:12:31] EDIT dining_hall_rater/models/db.py: 0
+[2014-12-14 17:35:30] EDIT dining_hall_rater/views/default/index.html: 0
+[2014-12-14 17:41:19] EDIT dining_hall_rater/controllers/default.py: 1
+[2014-12-14 17:43:23] EDIT dining_hall_rater/models/db.py: -1
+[2014-12-14 17:43:33] EDIT dining_hall_rater/controllers/default.py: -1
+[2014-12-14 17:43:57] EDIT dining_hall_rater/controllers/default.py: 1
+[2014-12-14 17:44:36] EDIT dining_hall_rater/controllers/default.py: 0
+[2014-12-14 17:44:38] EDIT dining_hall_rater/views/default/index.html: 0
+[2014-12-14 17:44:40] EDIT dining_hall_rater/models/db.py: 0
