@@ -29,11 +29,17 @@ db.define_table(
 
 # POSTS
 db.define_table('posts', Field('dh_name', 'string'),
-                         Field('comment', 'text'),
+                         Field('comment', 'text', required = True),
                          Field('rating', 'integer'),
                          Field('file', 'upload'),
                          Field('user', 'reference auth_user', default = db.auth_user),
                          Field('date', 'datetime', default = request.now))
+
+db.posts.rating.requires >= 0
+db.posts.rating.requires <= 5
+db.posts.dh_name.readable = db.posts.dh_name.writable = False
+db.posts.user.readable = db.posts.user.writable = False
+db.posts.date.readable = db.posts.date.writable = False
 
 #Created using Massimo Dipierro's FacebookClone application
 #https://github.com/mdipierro/web2py-appliances/blob/master/FacebookClone

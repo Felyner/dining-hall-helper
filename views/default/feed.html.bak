@@ -12,6 +12,7 @@
     <h1>Nine/Ten Ratings</h1>
 {{pass}}
 {{=A('Return to Dining Hall Selection', _class = 'btn btn-primary', _href = URL('index'))}}
+{{=A('Rate This Dining Hall', _class = 'btn btn-primary', _href = URL('new_post'))}}
 <br />
 <br />
 <div class = 'container'>

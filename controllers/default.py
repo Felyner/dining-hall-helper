@@ -18,52 +18,56 @@ def index():
     rating_total = 0
     for post in cowell_posts:
         if post.rating != None:
-            rating_total += int(post.rating)
-            ++cowell_rating_total
+            cowell_rating_total += post.rating
+            rating_total += 1
         pass
         cowell_post_total += 1
     pass
+    cowell_rating_avg = cowell_rating_total / rating_total
     crown_posts = db(db.posts.dh_name == 'crown').select(db.posts.ALL)
     crown_post_total = 0
     crown_rating_total = 0
     rating_total = 0
     for post in crown_posts:
         if post.rating != None:
-            rating_total += int(post.rating)
-            ++crown_rating_total
+            crown_rating_total += post.rating
+            rating_total += 1
         pass
         crown_post_total += 1
     pass
+    crown_rating_avg = crown_rating_total / rating_total
     porter_posts = db(db.posts.dh_name == 'porter').select(db.posts.ALL)
     porter_post_total = 0
     porter_rating_total = 0
     rating_total = 0
     for post in porter_posts:
         if post.rating != None:
-            rating_total += int(post.rating)
-            ++porter_rating_total
+            porter_rating_total += post.rating
+            rating_total += 1
         pass
         porter_post_total += 1
     pass
+    porter_rating_avg = porter_rating_total / rating_total
     eight_posts = db(db.posts.dh_name == 'eight').select(db.posts.ALL)
     eight_post_total = 0
     eight_rating_total = 0
     rating_total = 0
     for post in eight_posts:
         if post.rating != None:
-            rating_total += int(post.rating)
-            ++eight_rating_total
+            eight_rating_total += post.rating
+            rating_total += 1
         pass
         eight_post_total += 1
     pass
+    eight_rating_avg = eight_rating_total / rating_total
     nine_posts = db(db.posts.dh_name == 'nine').select(db.posts.ALL)
     nine_post_total = 0
     nine_rating_total = 0
     rating_total = 0
     for post in nine_posts:
         if post.rating != None:
-            rating_total += post.rating
-            ++nine_rating_total
+            nine_rating_total += post.rating
+            rating_total += 1
         pass
         nine_post_total += 1
     pass
@@ -73,6 +77,11 @@ def index():
 def feed():
     dh = request.args[0]
     posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)
+    return locals()
+
+def new_post():
+    dh = request.args[0]
+    form = SQLFORM(db.posts).process(next = URL('feed', args = dh))
     return locals()
 
 def user():

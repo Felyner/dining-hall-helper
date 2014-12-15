@@ -1,0 +1,968 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.TypeError'> long() argument must be a string or a number, not 'Table'"
+p3
+sS'layer'
+p4
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n#########################################################################\n## This is a sample controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - api is an example of Hypermedia API support and access control\n#########################################################################\n\ndef index():\n    # Trying to get average ratings. Be careful for divide-by-zero errors\n    # with dining halls which have no ratings\n    cowell_posts = db(db.posts.dh_name == \'cowell\').select(db.posts.ALL)\n    cowell_post_total = 0\n    cowell_rating_total = 0\n    rating_total = 0\n    for post in cowell_posts:\n        if post.rating != None:\n            cowell_rating_total += post.rating\n            rating_total += 1\n        pass\n        cowell_post_total += 1\n    pass\n    cowell_rating_avg = cowell_rating_total / rating_total\n    crown_posts = db(db.posts.dh_name == \'crown\').select(db.posts.ALL)\n    crown_post_total = 0\n    crown_rating_total = 0\n    rating_total = 0\n    for post in crown_posts:\n        if post.rating != None:\n            crown_rating_total += post.rating\n            rating_total += 1\n        pass\n        crown_post_total += 1\n    pass\n    crown_rating_avg = crown_rating_total / rating_total\n    porter_posts = db(db.posts.dh_name == \'porter\').select(db.posts.ALL)\n    porter_post_total = 0\n    porter_rating_total = 0\n    rating_total = 0\n    for post in porter_posts:\n        if post.rating != None:\n            porter_rating_total += post.rating\n            rating_total += 1\n        pass\n        porter_post_total += 1\n    pass\n    porter_rating_avg = porter_rating_total / rating_total\n    eight_posts = db(db.posts.dh_name == \'eight\').select(db.posts.ALL)\n    eight_post_total = 0\n    eight_rating_total = 0\n    rating_total = 0\n    for post in eight_posts:\n        if post.rating != None:\n            eight_rating_total += post.rating\n            rating_total += 1\n        pass\n        eight_post_total += 1\n    pass\n    eight_rating_avg = eight_rating_total / rating_total\n    nine_posts = db(db.posts.dh_name == \'nine\').select(db.posts.ALL)\n    nine_post_total = 0\n    nine_rating_total = 0\n    rating_total = 0\n    for post in nine_posts:\n        if post.rating != None:\n            nine_rating_total += post.rating\n            rating_total += 1\n        pass\n        nine_post_total += 1\n    pass\n    nine_rating_avg = nine_rating_total / rating_total\n    return locals()\n\ndef feed():\n    dh = request.args[0]\n    posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)\n    return locals()\n\ndef new_post():\n    dh = request.args[0]\n    form = SQLFORM(db.posts).process(next = URL(\'index\'))\n    form.vars.dh_name = dh\n    return locals()\n\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n\n@auth.requires_login() \ndef api():\n    """\n    this is example of API with access control\n    WEB2PY provides Hypermedia API (Collection+JSON) Experimental\n    """\n    from gluon.contrib.hypermedia import Collection\n    rules = {\n        \'<tablename>\': {\'GET\':{},\'POST\':{},\'PUT\':{},\'DELETE\':{}},\n        }\n    return Collection(db).process(request,response,rules)\n\ndef menu():\n    query = (db.dish.DH == request.args[0] and db.dish.meal == request.args[1])\n    dishes = db(query).select(db.dish.ALL)\n    \n    query = (db.ratings.dh_name == "cowell")\n    cowellRatings = db(query).select(db.ratings.ALL)\n    query = (db.ratings.dh_name == "crown")\n    crownRatings = db(query).select(db.ratings.ALL)\n    query = (db.ratings.dh_name == "porter")\n    porterRatings = db(query).select(db.ratings.ALL)\n    query = (db.ratings.dh_name == "eight")\n    eightRatings = db(query).select(db.ratings.ALL)\n    query = (db.ratings.dh_name == "nine")\n    nineRatings = db(query).select(db.ratings.ALL)\n    \n    response.view = \'default/menu.html\'\n    return dict(dishes=dishes, cowellRatings=cowellRatings, crownRatings=crownRatings,\n                porterRatings=porterRatings, eightRatings=eightRatings, nineRatings=nineRatings, dh=request.args[0],\n                meal=request.args[1])\n\ndef help():\n    query = (db.snap.picture == request.args[0])\n    snaps = db(query).select(db.snap.ALL)\n    newHelpful = snaps[0].helpful+1\n    db(query).update(helpful = newHelpful)\n# Created using Massimo DiPierro\'s FacebookClone application \n# https://github.com/mdipierro/web2py-appliances/blob/master/FacebookClone/\n@auth.requires_login()\ndef friends():\n    friends = db(User.id==Link.source)(Link.target==me).select(orderby=alphabetical)\n    requests = db(User.id==Link.target)(Link.source==me).select(orderby=alphabetical)\n    return locals()\n\n# this is the Ajax callback\n@auth.requires_login()\ndef friendship():\n    """AJAX callback!"""\n    if request.env.request_method!=\'POST\': raise HTTP(400)\n    if a0==\'request\' and not Link(source=a1,target=me):\n        # insert a new friendship request\n        Link.insert(source=me,target=a1)\n    elif a0==\'accept\':\n        # accept an existing friendship request\n        db(Link.target==me)(Link.source==a1).update(accepted=True)\n        if not db(Link.source==me)(Link.target==a1).count():\n            Link.insert(source=me,target=a1)\n    elif a0==\'deny\':\n        # deny an existing friendship request\n        db(Link.target==me)(Link.source==a1).delete()\n    elif a0==\'remove\':\n        # delete a previous friendship request\n        db(Link.source==me)(Link.target==a1).delete()\n@auth.requires_login()\ndef search():\n    form = SQLFORM.factory(Field(\'name\',requires=IS_NOT_EMPTY()))\n    if form.accepts(request):\n        tokens = form.vars.name.split()\n        query = reduce(lambda a,b:a&b,\n                       [User.first_name.contains(k)|User.last_name.contains(k) \\\n                            for k in tokens])\n        people = db(query).select(orderby=alphabetical)\n    else:\n        people = []\n    return locals()\n\nresponse._vars=response._caller(new_post)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__hash__'
+p12
+S"<method-wrapper '__hash__' of exceptions.TypeError object>"
+p13
+sS'__setattr__'
+p14
+S"<method-wrapper '__setattr__' of exceptions.TypeError object>"
+p15
+sS'__reduce_ex__'
+p16
+S'<built-in method __reduce_ex__ of exceptions.TypeError object>'
+p17
+sS'__getslice__'
+p18
+S"<method-wrapper '__getslice__' of exceptions.TypeError object>"
+p19
+sS'__getitem__'
+p20
+S"<method-wrapper '__getitem__' of exceptions.TypeError object>"
+p21
+sS'__setstate__'
+p22
+S'<built-in method __setstate__ of exceptions.TypeError object>'
+p23
+sS'args'
+p24
+S'("long() argument must be a string or a number, not \'Table\'",)'
+p25
+sS'__reduce__'
+p26
+S'<built-in method __reduce__ of exceptions.TypeError object>'
+p27
+sS'__str__'
+p28
+S"<method-wrapper '__str__' of exceptions.TypeError object>"
+p29
+sS'__format__'
+p30
+S'<built-in method __format__ of exceptions.TypeError object>'
+p31
+sS'__getattribute__'
+p32
+S"<method-wrapper '__getattribute__' of exceptions.TypeError object>"
+p33
+sS'__class__'
+p34
+S"<type 'exceptions.TypeError'>"
+p35
+sS'__unicode__'
+p36
+S'<built-in method __unicode__ of exceptions.TypeError object>'
+p37
+sS'__delattr__'
+p38
+S"<method-wrapper '__delattr__' of exceptions.TypeError object>"
+p39
+sS'__subclasshook__'
+p40
+S'<built-in method __subclasshook__ of type object>'
+p41
+sS'__repr__'
+p42
+S"<method-wrapper '__repr__' of exceptions.TypeError object>"
+p43
+sS'__dict__'
+p44
+S'{}'
+p45
+sS'__sizeof__'
+p46
+S'<built-in method __sizeof__ of exceptions.TypeError object>'
+p47
+sS'__doc__'
+p48
+S"'Inappropriate argument type.'"
+p49
+sS'__init__'
+p50
+S"<method-wrapper '__init__' of exceptions.TypeError object>"
+p51
+sS'__new__'
+p52
+S'<built-in method __new__ of type object>'
+p53
+ssS'evalue'
+p54
+S"long() argument must be a string or a number, not 'Table'"
+p55
+sS'request'
+p56
+cgluon.html
+XML_unpickle
+p57
+(S's\x9am\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>dining_hall_rater</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>nine</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-7a79b78d-eae1-4d41-812f-c84168d9156f<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_dining_hall_helper</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-bb84c8a4-dc5f-42d5-9895-e34e434687fa<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_dining_hall_rater</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-82fbb34c-1d1f-494a-a0f3-848f7c4318dc<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>630</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundarymItJFA8p7z1TByww</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CACHE_CONTROL</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>630</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundarymItJFA8p7z1TByww</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_dining_hall_helper=127.0.0.1-bb84c8a4-dc5f-42d5-9895-e34e434687fa; session_id_welcome=127.0.0.1-82fbb34c-1d1f-494a-a0f3-848f7c4318dc; session_id_admin=127.0.0.1-7a79b78d-eae1-4d41-812f-c84168d9156f; session_id_dining_hall_rater=127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ORIGIN</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>51072</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/welcome/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/admin/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10501d3f8: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;10.0.0.8&#x27;, &#x27;2601:9:2580:3af:e6ce:8fff:fe3f:ef86&#x27;, &#x27;fe80::e6ce:8fff:fe3f:ef86%en1&#x27;, &#x27;2601:9:2580:3af:ad98:8b79:1acc:3f66&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Patricks-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/patrickmathieu/Documents/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_length</td><td style="vertical-align:top;">:</td><td><div>630</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_type</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundarymItJFA8p7z1TByww</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cache_control</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_length</td><td style="vertical-align:top;">:</td><td><div>630</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_type</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundarymItJFA8p7z1TByww</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_dining_hall_helper=127.0.0.1-bb84c8a4-dc5f-42d5-9895-e34e434687fa; session_id_welcome=127.0.0.1-82fbb34c-1d1f-494a-a0f3-848f7c4318dc; session_id_admin=127.0.0.1-7a79b78d-eae1-4d41-812f-c84168d9156f; session_id_dining_hall_rater=127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_origin</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>2601:9:2580:3af:ad98:8b79:1acc:3f66</div></td></tr><tr><td><div>2601:9:2580:3af:e6ce:8fff:fe3f:ef86</div></td></tr><tr><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::e6ce:8fff:fe3f:ef86%en1</div></td></tr><tr><td><div>10.0.0.8</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>51072</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.9.11-stable+timestamp.2014.09.15.23.35.11</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x1039001e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x104573db8&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x10e9a0750&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x1039001e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x104573db8&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x10e9a0750&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>new_post</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/welcome/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/admin/&#x27;, &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_helper/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10501d3f8: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;10.0.0.8&#x27;, &#x27;2601:9:2580:3af:e6ce:8fff:fe3f:ef86&#x27;, &#x27;fe80::e6ce:8fff:fe3f:ef86%en1&#x27;, &#x27;2601:9:2580:3af:ad98:8b79:1acc:3f66&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Patricks-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/patrickmathieu/Documents/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>2601:9:2580:3af:ad98:8b79:1acc:3f66</div></td></tr><tr><td><div>2601:9:2580:3af:e6ce:8fff:fe3f:ef86</div></td></tr><tr><td><div>Patricks-MacBook-Pro.local</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::e6ce:8fff:fe3f:ef86%en1</div></td></tr><tr><td><div>10.0.0.8</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.9.11-stable+timestamp.2014.09.15.23.35.11</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_sheduler</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2014, 12, 14, 16, 51, 11, 137312)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div>nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/dining_hall_rater/default/new_post/nine</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2014, 12, 15, 0, 51, 11, 137321)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">uuid</td><td style="vertical-align:top;">:</td><td><div>dining_hall_rater/127.0.0.1.2014-12-14.16-51-11.de9bf256-01c6-486e-a21d-fc6052b7abbc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x10e9c9b10&gt;</div></td></tr></table></div>'
+tRp58
+sS'frames'
+p59
+(lp60
+(dp61
+S'file'
+p62
+S'/Users/patrickmathieu/Documents/web2py/gluon/restricted.py'
+p63
+sS'dump'
+p64
+(dp65
+S'environment'
+p66
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, 'CAT': <class 'gluon.html.CAT'>, ...}"
+p67
+sS'ccode'
+p68
+S'<code object <module> at 0x10eadbbb0, file "/Use...ning_hall_rater/controllers/default.py", line 12>'
+p69
+ssS'lnum'
+p70
+I224
+sS'lines'
+p71
+(dp72
+I224
+S'        exec ccode in environment'
+p73
+sI225
+S'    except HTTP:'
+p74
+sI226
+S'        raise'
+p75
+sI227
+S'    except RestrictedError:'
+p76
+sI228
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p77
+sI219
+S'    try:'
+p78
+sI220
+S'        if isinstance(code, types.CodeType):'
+p79
+sI221
+S'            ccode = code'
+p80
+sI222
+S'        else:'
+p81
+sI223
+S'            ccode = compile2(code, layer)'
+p82
+ssS'call'
+p83
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ...als()\\n\\nresponse._vars=response._caller(new_post)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, 'CAT': <class 'gluon.html.CAT'>, ...}, layer='/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py')"
+p84
+sS'func'
+p85
+S'restricted'
+p86
+sa(dp87
+g62
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py'
+p88
+sg64
+(dp89
+sg70
+I202
+sg71
+(dp90
+I192
+S'    if form.accepts(request):'
+p91
+sI193
+S'        tokens = form.vars.name.split()'
+p92
+sI194
+S'        query = reduce(lambda a,b:a&b,'
+p93
+sI195
+S'                       [User.first_name.contains(k)|User.last_name.contains(k) \\'
+p94
+sI196
+S'                            for k in tokens])'
+p95
+sI197
+S'        people = db(query).select(orderby=alphabetical)'
+p96
+sI198
+S'    else:'
+p97
+sI199
+S'        people = []'
+p98
+sI200
+S'    return locals()'
+p99
+sI191
+S"    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))"
+p100
+ssg83
+S'()'
+p101
+sg85
+S'<module>'
+p102
+sa(dp103
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/globals.py'
+p104
+sg64
+(dp105
+S'self'
+p106
+S'undefined'
+p107
+sS'f'
+S'<function new_post>'
+p108
+ssg70
+I392
+sg71
+(dp109
+I387
+S"        self.flash = ''            # used by the default view layout"
+p110
+sI388
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p111
+sI389
+S'        self.menu = []             # used by the default view layout'
+p112
+sI390
+S'        self.files = []            # used by web2py_ajax.html'
+p113
+sI391
+S'        self._vars = None'
+p114
+sI392
+S'        self._caller = lambda f: f()'
+p115
+sI393
+S'        self._view_environment = None'
+p116
+sI394
+S'        self._custom_commit = None'
+p117
+sI395
+S'        self._custom_rollback = None'
+p118
+sI396
+S"        self.generic_patterns = ['*']"
+p119
+ssg83
+S'(f=<function new_post>)'
+p120
+sg85
+S'<lambda>'
+p121
+sa(dp122
+g62
+S'/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py'
+p123
+sg64
+(dp124
+S'form'
+p125
+g107
+sS'global SQLFORM'
+p126
+S"<class 'gluon.sqlhtml.SQLFORM'>"
+p127
+sS'db.posts'
+p128
+S'<Table posts (id,dh_name,comment,rating,file,user,date)>'
+p129
+sS').process'
+p130
+g107
+sS'global URL'
+p131
+S'<function URL>'
+p132
+sS'builtinnext'
+p133
+S'<built-in function next>'
+p134
+sS'global db'
+p135
+S'<DAL uri="sqlite://storage.sqlite">'
+p136
+ssg70
+I84
+sg71
+(dp137
+I79
+S'    posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)'
+p138
+sI80
+S'    return locals()'
+p139
+sI81
+S''
+sI82
+S'def new_post():'
+p140
+sI83
+S'    dh = request.args[0]'
+p141
+sI84
+S"    form = SQLFORM(db.posts).process(next = URL('index'))"
+p142
+sI85
+S'    form.vars.dh_name = dh'
+p143
+sI86
+S'    return locals()'
+p144
+sI87
+S''
+sI88
+S'def user():'
+p145
+ssg83
+S'()'
+p146
+sg85
+S'new_post'
+p147
+sa(dp148
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/html.py'
+p149
+sg64
+(dp150
+S'self'
+p151
+S'<gluon.sqlhtml.SQLFORM object>'
+p152
+sS'self.validate'
+p153
+S'<bound method SQLFORM.validate of <gluon.sqlhtml.SQLFORM object>>'
+p154
+sS'kwargs'
+p155
+S"{'dbio': True, 'next': '/dining_hall_rater/default/index'}"
+p156
+ssg70
+I2303
+sg71
+(dp157
+I2304
+S'        return self'
+p158
+sI2305
+S''
+sI2306
+S'    REDIRECT_JS = "window.location=\'%s\';return false"'
+p159
+sI2307
+S''
+sI2298
+S''
+sI2299
+S''
+sI2300
+S'        """'
+p160
+sI2301
+S"        kwargs['dbio'] = kwargs.get('dbio', True)"
+p161
+sI2302
+S'                                    # necessary for SQLHTML forms'
+p162
+sI2303
+S'        self.validate(**kwargs)'
+p163
+ssg83
+S"(self=<gluon.sqlhtml.SQLFORM object>, **kwargs={'dbio': True, 'next': '/dining_hall_rater/default/index'})"
+p164
+sg85
+S'process'
+p165
+sa(dp166
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/html.py'
+p167
+sg64
+(dp168
+S'self'
+p169
+S'<gluon.sqlhtml.SQLFORM object>'
+p170
+sS'self.accepts'
+p171
+S'<bound method SQLFORM.accepts of <gluon.sqlhtml.SQLFORM object>>'
+p172
+sS'kwargs'
+p173
+S"{'dbio': True, 'request_vars': <Storage {'comment': 'I like turtles.', 'rating'...ba0a3', '_formname': 'posts/create', 'file': ''}>, 'session': <Storage {'last_query': 'db.posts.id>0', '_user_...368ad', '1c0adab2-27be-40b6-8e0e-51ce4454ecff']}>}"
+p174
+ssg70
+I2240
+sg71
+(dp175
+I2240
+S'        if self.accepts(**kwargs):'
+p176
+sI2241
+S"            if onsuccess == 'flash':"
+p177
+sI2242
+S'                if next:'
+p178
+sI2243
+S'                    current.session.flash = message_onsuccess'
+p179
+sI2244
+S'                else:'
+p180
+sI2235
+S"        for key in ('message_onsuccess', 'message_onfailure', 'onsuccess',"
+p181
+sI2236
+S"                    'onfailure', 'next', 'message_onchange', 'onchange'):"
+p182
+sI2237
+S'            if key in kwargs:'
+p183
+sI2238
+S'                del kwargs[key]'
+p184
+sI2239
+S''
+ssg83
+S"(self=<gluon.sqlhtml.SQLFORM object>, **kwargs={'dbio': True, 'request_vars': <Storage {'comment': 'I like turtles.', 'rating'...ba0a3', '_formname': 'posts/create', 'file': ''}>, 'session': <Storage {'last_query': 'db.posts.id>0', '_user_...368ad', '1c0adab2-27be-40b6-8e0e-51ce4454ecff']}>})"
+p185
+sg85
+S'validate'
+p186
+sa(dp187
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/sqlhtml.py'
+p188
+sg64
+(dp189
+S'self.vars.id'
+p190
+S'None'
+p191
+sS'fields'
+p192
+S"{'comment': 'I like turtles.', 'date': datetime.datetime(2014, 12, 14, 16, 51, 11, 137312), 'file': '', 'rating': 5, 'user': <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>}"
+p193
+sS'self'
+p194
+S'<gluon.sqlhtml.SQLFORM object>'
+p195
+sS'self.vars'
+p196
+S"<Storage {'comment': 'I like turtles.', 'rating': 5, 'file': ''}>"
+p197
+sS'self.table.insert'
+p198
+S'<bound method Table.insert of <Table posts (id,dh_name,comment,rating,file,user,date)>>'
+p199
+sS'self.table'
+p200
+S'<Table posts (id,dh_name,comment,rating,file,user,date)>'
+p201
+ssg70
+I1671
+sg71
+(dp202
+I1666
+S'                    self.vars.id = self.record[self.id_field_name]'
+p203
+sI1667
+S'                    if fields:'
+p204
+sI1668
+S'                        self.table._db(self.table._id == self.record['
+p205
+sI1669
+S'                                       self.id_field_name]).update(**fields)'
+p206
+sI1670
+S'                else:'
+p207
+sI1671
+S'                    self.vars.id = self.table.insert(**fields)'
+p208
+sI1672
+S'        self.accepted = ret'
+p209
+sI1673
+S'        return ret'
+p210
+sI1674
+S''
+sI1675
+S'    AUTOTYPES = {'
+p211
+ssg83
+S"(self=<gluon.sqlhtml.SQLFORM object>, request_vars=<Storage {'comment': 'I like turtles.', 'rating'...ba0a3', '_formname': 'posts/create', 'file': ''}>, session=<Storage {'last_query': 'db.posts.id>0', '_user_...368ad', '1c0adab2-27be-40b6-8e0e-51ce4454ecff']}>, formname='posts/create', keepvalues=False, onvalidation=None, dbio=True, hideerror=False, detect_record_change=False, **kwargs={})"
+p212
+sg85
+S'accepts'
+p213
+sa(dp214
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p215
+sg64
+(dp216
+S'self._listify'
+p217
+S'<bound method Table._listify of <Table posts (id,dh_name,comment,rating,file,user,date)>>'
+p218
+sS'fields'
+p219
+S"{'comment': 'I like turtles.', 'date': datetime.datetime(2014, 12, 14, 16, 51, 11, 137312), 'file': '', 'rating': 5, 'user': <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>}"
+p220
+sS'self'
+p221
+S'<Table posts (id,dh_name,comment,rating,file,user,date)>'
+p222
+sS'ret'
+p223
+g107
+sS'self._db._adapter'
+p224
+S'<gluon.dal.SQLiteAdapter object>'
+p225
+sS'self._db._adapter.insert'
+p226
+S'<bound method SQLiteAdapter.insert of <gluon.dal.SQLiteAdapter object>>'
+p227
+sS'self._db'
+p228
+S'<DAL uri="sqlite://storage.sqlite">'
+p229
+ssg70
+I9317
+sg71
+(dp230
+I9312
+S''
+sI9313
+S'    def insert(self, **fields):'
+p231
+sI9314
+S'        fields = self._defaults(fields)'
+p232
+sI9315
+S'        self._attempt_upload(fields)'
+p233
+sI9316
+S'        if any(f(fields) for f in self._before_insert): return 0'
+p234
+sI9317
+S'        ret =  self._db._adapter.insert(self, self._listify(fields))'
+p235
+sI9318
+S'        if ret and self._after_insert:'
+p236
+sI9319
+S'            fields = Row(fields)'
+p237
+sI9320
+S'            [f(fields, ret) for f in self._after_insert]'
+p238
+sI9321
+S'        return ret'
+p239
+ssg83
+S"(self=<Table posts (id,dh_name,comment,rating,file,user,date)>, **fields={'comment': 'I like turtles.', 'date': datetime.datetime(2014, 12, 14, 16, 51, 11, 137312), 'file': '', 'rating': 5, 'user': <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>})"
+p240
+sg85
+S'insert'
+p241
+sa(dp242
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p243
+sg64
+(dp244
+S'self._insert'
+p245
+S'<bound method SQLiteAdapter._insert of <gluon.dal.SQLiteAdapter object>>'
+p246
+sS'query'
+p247
+g107
+sS'self'
+p248
+S'<gluon.dal.SQLiteAdapter object>'
+p249
+sS'fields'
+p250
+S"[(<gluon.dal.Field object>, 'I like turtles.'), (<gluon.dal.Field object>, 5), (<gluon.dal.Field object>, datetime.datetime(2014, 12, 14, 16, 51, 11, 137312)), (<gluon.dal.Field object>, <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>), (<gluon.dal.Field object>, '')]"
+p251
+sS'table'
+p252
+S'<Table posts (id,dh_name,comment,rating,file,user,date)>'
+p253
+ssg70
+I1354
+sg71
+(dp254
+I1349
+S''
+sI1350
+S'    def _insert_empty(self, table):'
+p255
+sI1351
+S"        return 'INSERT INTO %s DEFAULT VALUES;' % (table.sqlsafe)"
+p256
+sI1352
+S''
+sI1353
+S'    def insert(self, table, fields):'
+p257
+sI1354
+S'        query = self._insert(table, fields)'
+p258
+sI1355
+S'        try:'
+p259
+sI1356
+S'            self.execute(query)'
+p260
+sI1357
+S'        except Exception:'
+p261
+sI1358
+S'            e = sys.exc_info()[1]'
+p262
+ssg83
+S"(self=<gluon.dal.SQLiteAdapter object>, table=<Table posts (id,dh_name,comment,rating,file,user,date)>, fields=[(<gluon.dal.Field object>, 'I like turtles.'), (<gluon.dal.Field object>, 5), (<gluon.dal.Field object>, datetime.datetime(2014, 12, 14, 16, 51, 11, 137312)), (<gluon.dal.Field object>, <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>), (<gluon.dal.Field object>, '')])"
+p263
+sg85
+g241
+sa(dp264
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p265
+sg64
+(dp266
+S'f'
+g107
+sS'fields'
+p267
+S"[(<gluon.dal.Field object>, 'I like turtles.'), (<gluon.dal.Field object>, 5), (<gluon.dal.Field object>, datetime.datetime(2014, 12, 14, 16, 51, 11, 137312)), (<gluon.dal.Field object>, <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>), (<gluon.dal.Field object>, '')]"
+p268
+sS'self'
+p269
+S'<gluon.dal.SQLiteAdapter object>'
+p270
+sS'values'
+p271
+g107
+sS'v'
+g107
+sS'self.expand'
+p272
+S'<bound method SQLiteAdapter.expand of <gluon.dal.SQLiteAdapter object>>'
+p273
+ssg70
+I1345
+sg71
+(dp274
+I1344
+S"            keys = ','.join(f.sqlsafe_name for f, v in fields)"
+p275
+sI1345
+S"            values = ','.join(self.expand(v, f.type) for f, v in fields)"
+p276
+sI1346
+S"            return 'INSERT INTO %s(%s) VALUES (%s);' % (table_rname, keys, values)"
+p277
+sI1347
+S'        else:'
+p278
+sI1348
+S'            return self._insert_empty(table)'
+p279
+sI1349
+S''
+sI1340
+S''
+sI1341
+S'    def _insert(self, table, fields):'
+p280
+sI1342
+S'        table_rname = table.sqlsafe'
+p281
+sI1343
+S'        if fields:'
+p282
+ssg83
+S"(self=<gluon.dal.SQLiteAdapter object>, table=<Table posts (id,dh_name,comment,rating,file,user,date)>, fields=[(<gluon.dal.Field object>, 'I like turtles.'), (<gluon.dal.Field object>, 5), (<gluon.dal.Field object>, datetime.datetime(2014, 12, 14, 16, 51, 11, 137312)), (<gluon.dal.Field object>, <Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>), (<gluon.dal.Field object>, '')])"
+p283
+sg85
+S'_insert'
+p284
+sa(dp285
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p286
+sg64
+(dp287
+S'f'
+S'<gluon.dal.Field object>'
+p288
+sS'fields'
+p289
+g107
+sS'self'
+p290
+S'<gluon.dal.SQLiteAdapter object>'
+p291
+sS'f.type'
+p292
+S"'reference auth_user'"
+p293
+sS'values'
+p294
+g107
+sS'v'
+S'<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>'
+p295
+sS'self.expand'
+p296
+S'<bound method SQLiteAdapter.expand of <gluon.dal.SQLiteAdapter object>>'
+p297
+ssg70
+I1345
+sg71
+(dp298
+I1344
+S"            keys = ','.join(f.sqlsafe_name for f, v in fields)"
+p299
+sI1345
+S"            values = ','.join(self.expand(v, f.type) for f, v in fields)"
+p300
+sI1346
+S"            return 'INSERT INTO %s(%s) VALUES (%s);' % (table_rname, keys, values)"
+p301
+sI1347
+S'        else:'
+p302
+sI1348
+S'            return self._insert_empty(table)'
+p303
+sI1349
+S''
+sI1340
+S''
+sI1341
+S'    def _insert(self, table, fields):'
+p304
+sI1342
+S'        table_rname = table.sqlsafe'
+p305
+sI1343
+S'        if fields:'
+p306
+ssg83
+S'((f=<gluon.dal.Field object>, v=<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>))'
+p307
+sg85
+S'<genexpr>'
+p308
+sa(dp309
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p310
+sg64
+(dp311
+S'builtinstr'
+p312
+S"<type 'str'>"
+p313
+sS'field_type'
+p314
+S"'reference auth_user'"
+p315
+sS'self'
+p316
+S'<gluon.dal.SQLiteAdapter object>'
+p317
+sS'expression'
+p318
+S'<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>'
+p319
+sS'self.represent'
+p320
+S'<bound method SQLiteAdapter.represent of <gluon.dal.SQLiteAdapter object>>'
+p321
+ssg70
+I1555
+sg71
+(dp322
+I1550
+S"                out = '(%s)' % op"
+p323
+sI1551
+S'            else:'
+p324
+sI1552
+S'                out = op()'
+p325
+sI1553
+S'            return out'
+p326
+sI1554
+S'        elif field_type:'
+p327
+sI1555
+S'            return str(self.represent(expression, field_type))'
+p328
+sI1556
+S'        elif isinstance(expression, (list, tuple)):'
+p329
+sI1557
+S"            return ','.join(self.represent(item, field_type) \\"
+p330
+sI1558
+S'                                for item in expression)'
+p331
+sI1559
+S'        elif isinstance(expression, bool):'
+p332
+ssg83
+S"(self=<gluon.dal.SQLiteAdapter object>, expression=<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>, field_type='reference auth_user', colnames=False)"
+p333
+sg85
+S'expand'
+p334
+sa(dp335
+g62
+S'/Users/patrickmathieu/Documents/web2py/gluon/dal.py'
+p336
+sg64
+(dp337
+S'builtinstr'
+p338
+S"<type 'str'>"
+p339
+sS'builtinlong'
+p340
+S"<type 'long'>"
+p341
+sS'obj'
+p342
+S'<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>'
+p343
+ssg70
+I2012
+sg71
+(dp344
+I2016
+S'                    ftype = self.db[p[0]][p[2]].type'
+p345
+sI2007
+S'            return str(obj)'
+p346
+sI2008
+S"        elif field_is_type('reference'): # reference"
+p347
+sI2009
+S'            # check for tablename first'
+p348
+sI2010
+S'            referenced = fieldtype[9:].strip()'
+p349
+sI2011
+S'            if referenced in self.db.tables:'
+p350
+sI2012
+S'                return str(long(obj))'
+p351
+sI2013
+S"            p = referenced.partition('.')"
+p352
+sI2014
+S"            if p[2] != '':"
+p353
+sI2015
+S'                try:'
+p354
+ssg83
+S"(self=<gluon.dal.SQLiteAdapter object>, obj=<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>, fieldtype='reference auth_user')"
+p355
+sg85
+S'represent'
+p356
+sasS'pyver'
+p357
+S'Python 2.7.6: /usr/bin/python (prefix: /System/Library/Frameworks/Python.framework/Versions/2.7)'
+p358
+sS'session'
+p359
+g57
+(S's\x89\t\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">auth</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">expiration</td><td style="vertical-align:top;">:</td><td><div>3600</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">hmac_key</td><td style="vertical-align:top;">:</td><td><div>a9ab85a5-b5d6-4ee6-b32e-da63ff72c0b3</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_visit</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2014, 12, 14, 16, 48, 46, 951570)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remember_me</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">email</td><td style="vertical-align:top;">:</td><td><div>pmathieu@ucsc.edu</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">first_name</td><td style="vertical-align:top;">:</td><td><div>Patrick</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">id</td><td style="vertical-align:top;">:</td><td><div>2L</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_name</td><td style="vertical-align:top;">:</td><td><div>Mathieu</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_id</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">reset_password_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user_groups</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_orderby</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_query</td><td style="vertical-align:top;">:</td><td><div>db.posts.id&gt;0</div></td></tr></table></div>'
+tRp360
+sS'etype'
+p361
+S"<type 'exceptions.TypeError'>"
+p362
+sS'date'
+p363
+S'Sun Dec 14 16:51:11 2014'
+p364
+sS'response'
+p365
+g57
+(S's\x11\x1c\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x10ec6f068&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_dining_hall_rater</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div>: </div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>table3cols</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/dining_hall_rater/default/index</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Friends</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/dining_hall_rater/default/friends</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Search</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/dining_hall_rater/default/search</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div>social network</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/new_post/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_key</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_dining_hall_rater</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/sessions/0c4/091/127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716&#x27;, mode &#x27;rb+&#x27; at 0x10e87d6f0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/sessions/127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>eb71e6937a02279b3bbb56653ada0412</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-27c2cb52-2098-4574-ab99-b8632e605716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_dining_hall_rater</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>dining_hall_rater</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div>Rate your dining hall!</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Dining Hall Rater</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>default/new_post.html</div></td></tr></table></div>'
+tRp366
+sS'locals'
+p367
+(dp368
+S'referenced'
+p369
+S"'auth_user'"
+p370
+sS'obj'
+p371
+S'<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>'
+p372
+sS'self'
+p373
+S'<gluon.dal.SQLiteAdapter object>'
+p374
+sS'r'
+S'None'
+p375
+sS'fieldtype'
+p376
+S"'reference auth_user'"
+p377
+sS'field_is_type'
+p378
+S'<built-in method startswith of str object>'
+p379
+sssS'traceback'
+p380
+S'Traceback (most recent call last):\n  File "/Users/patrickmathieu/Documents/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py", line 202, in <module>\n  File "/Users/patrickmathieu/Documents/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/Users/patrickmathieu/Documents/web2py/applications/dining_hall_rater/controllers/default.py", line 84, in new_post\n    form = SQLFORM(db.posts).process(next = URL(\'index\'))\n  File "/Users/patrickmathieu/Documents/web2py/gluon/html.py", line 2303, in process\n    self.validate(**kwargs)\n  File "/Users/patrickmathieu/Documents/web2py/gluon/html.py", line 2240, in validate\n    if self.accepts(**kwargs):\n  File "/Users/patrickmathieu/Documents/web2py/gluon/sqlhtml.py", line 1671, in accepts\n    self.vars.id = self.table.insert(**fields)\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 9317, in insert\n    ret =  self._db._adapter.insert(self, self._listify(fields))\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 1354, in insert\n    query = self._insert(table, fields)\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 1345, in _insert\n    values = \',\'.join(self.expand(v, f.type) for f, v in fields)\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 1345, in <genexpr>\n    values = \',\'.join(self.expand(v, f.type) for f, v in fields)\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 1555, in expand\n    return str(self.represent(expression, field_type))\n  File "/Users/patrickmathieu/Documents/web2py/gluon/dal.py", line 2012, in represent\n    return str(long(obj))\nTypeError: long() argument must be a string or a number, not \'Table\'\n'
+p381
+s.
