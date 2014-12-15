@@ -45,49 +45,14 @@ function mainPost() {
         this.times[i] = this.postObjs[i].time;
         this.comments[i] = this.postObjs[i].comment;
     }
-    /*
-    this.pics[0] = document.getElementById('first');
-    this.pics[1] = document.getElementById('second');
-    this.pics[2] = document.getElementById('third');
-    this.pics[3] = document.getElementById('fourth');
-    this.pics[4] = document.getElementById('fifth');
-    this.pics[5] = document.getElementById('sixth');
     
-    this.names[0] = "Dylan Woodbury";
-    this.names[1] = "Mark Sanchez";
-    this.names[2] = "Stephanie Aslean";
-    this.names[3] = "Toni Michaels";
-    this.names[4] = "Albert Rockman";
-    this.names[5] = "Danny Fitzer";
-    
-    this.scores[0] = "4";
-	this.scores[1] = "4";
-	this.scores[2] = "3";
-	this.scores[3] = "4";
-	this.scores[4] = "2";
-	this.scores[5] = "5";
-    
-    this.times[0] = "23 minutes ago";
-	this.times[1] = "42 minutes ago";
-	this.times[2] = "16 minutes ago";
-	this.times[3] = "15 minutes ago";
-	this.times[4] = "4 minutes ago";
-	this.times[5] = "8 minutes ago";
-    
-    this.comments[0] = "The food was pretty good, loved the salad bar today and the soups.";
-	this.comments[1] = "Try the enchiladas.";
-	this.comments[2] = "Not enough for vegetarians";
-	this.comments[3] = "Not bad, I liked the tacos and the enchiladas.";
-	this.comments[4] = "Too busy, too little food. Avoid.";
-	this.comments[5] = "One of the best dining hall meals I've had in a while!";
-	*/
   	/*** INIT ***/
   	
   	this.init = function() {
   		
   		this.mode = "pictures";
         var count=0;
-        for(var i=0; i<3; i++) {
+        for(var i=-1; i<4; i++) {
             for(var j=0; j<2; j++) {
                 var xPos="center";
                 
@@ -98,22 +63,33 @@ function mainPost() {
                     //284
                 foodPics.push(new FoodPic(i*this.width/3, j*this.width/3, xPos, yPos, canvas.width/3, canvas.height/2, this.imgs[count], this.names[count], this.times[count], this.comments[count], this.scores[count]));
                 count++;
+                if(count >= this.postObjs.length)
+                    count = 0;
             }
-        }
+        }/*
         foodPics.push(new FoodPic(this.width/3*-1, 0, "center", "up", canvas.width/3, canvas.height/2, this.imgs[4], this.names[4], this.times[4], this.comments[4], this.scores[4]));
         foodPics.push(new FoodPic(this.width/3*-1, this.width/3, "center", "down", canvas.width/3, canvas.height/2, this.imgs[5], this.names[5], this.times[5], this.comments[5], this.scores[5]));
         foodPics.push(new FoodPic(this.width/3*3, 0, "center", "up", canvas.width/3, canvas.height/2, this.imgs[0], this.names[0], this.times[0], this.comments[0], this.scores[0]));
-        foodPics.push(new FoodPic(this.width/3*3, this.width/3, "center", "down", canvas.width/3, canvas.height/2, this.imgs[1], this.names[1], this.times[1], this.comments[1], this.scores[1]));
+        foodPics.push(new FoodPic(this.width/3*3, this.width/3, "center", "down", canvas.width/3, canvas.height/2, this.imgs[1], this.names[1], this.times[1], this.comments[1], this.scores[1]));*/
         
        
         this.loadedToX1 = foodPics[6].x*-1;
         this.loadedToX2 = foodPics[8].x+foodPics[8].width-this.width;
         
-        
-        this.topRightIndices = [0,4,2];
-        this.bottomRightIndices = [1,5,3];
-        this.topLeftIndices = [5,1,3];
-        this.bottomLeftIndices = [4,0,2];
+        for(var i=this.postObjs.length-1; i>=0; i--) {
+            if(i%2==0) {
+                this.topRightIndices.push(i);
+                this.bottomLeftIndices.push(i);
+            }
+            else {
+                this.bottomRightIndices.push(i);
+                this.topLeftIndices.push(i);
+            }/*
+            this.topRightIndices = [0,4,2];
+            this.bottomRightIndices = [1,5,3];
+            this.topLeftIndices = [5,1,3];
+            this.bottomLeftIndices = [4,0,2];*/
+        }
         
          function getMousePos(canvas, evt) {
             var rect = canvas.getBoundingClientRect();
@@ -170,29 +146,6 @@ function mainPost() {
         canvas.addEventListener('mouseout', function(evt){nullFoodPics(foodPics)}, false);
         canvas.addEventListener('mousedown', function(evt){checkClick(getMousePos(canvas, evt), foodPics)}, false);
     };
-    
-   
-    
-    this.changeMode = function(newMode) {
-        
-        if(this.mode == "pictures") {
-            canvas.removeEventListener('mousemove', function(evt){sizeArrows(getMousePos(canvas, evt), arrows)}, false);
-            canvas.removeEventListener('mousemove', function(evt){moveFoodPics(getMousePos(canvas, evt), foodPics)}, false);
-            canvas.removeEventListener('mouseout', function(evt){nullFoodPics(foodPics)}, false);
-        } else if(this.mode == "ratings") {
-            
-        }
-        
-        if(newMode == "pictures" && this.mode != "pictures") {
-            canvas.addEventListener('mousemove', function(evt){sizeArrows(getMousePos(canvas, evt), arrows)}, false);
-        canvas.addEventListener('mousemove', function(evt){moveFoodPics(getMousePos(canvas, evt), foodPics)}, false);
-            canvas.addEventListener('mouseout', function(evt){nullFoodPics(foodPics)}, false);
-        } else if(newMode == "ratings" && this.mode != "ratings") {
-            
-        }
-        
-    };
-    
     
   	
   	/*** UPDATE ***/
