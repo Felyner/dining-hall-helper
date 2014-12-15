@@ -31,7 +31,8 @@ db.define_table(
 db.define_table('posts', Field('dh_name', 'string', required = True),
                          Field('comment', 'text', required = True),
                          Field('rating', 'integer'),
-                         Field('file', 'upload'),
+                         Field('file', 'upload', uploadfield='picture_file'),
+                         Field('picture_file', 'blob'),
                          Field('user', 'reference auth_user', default = db.auth_user),
                          Field('date', 'datetime', default = request.now))
 
