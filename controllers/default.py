@@ -73,7 +73,16 @@ def index():
     pass
     nine_rating_avg = nine_rating_total / rating_total
     return locals()
-
+@auth.requires_login()
+def friendfeed():
+    db.posts.user.default = me
+    db.posts.date.default = request.now
+    crud = Crud(db)
+    crud.settings.formstyle = 'table2cols'
+    form = crud.create(db.posts)
+    friends = [row.target for row in db(Link.source==me)(Link.accepted==True).select(Link.target)]
+    posts = db(db.posts.user.belongs(friends)).select(orderby=~db.posts.date,limitby=(0,100))
+    return locals()
 def feed():
     dh = request.args[0]
     posts = db(db.posts.dh_name == dh).select(db.posts.ALL, orderby =~ db.posts.date)
