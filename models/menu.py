@@ -5,4 +5,5 @@ response.menu = [
     (T('Home'), False, URL('default','index')),
     (T('Friends'), False, URL('default','friends')),
     (T('Search'), False, URL('default','search')),
+    (T('Friend Feed'), False, URL('default','friendfeed'))
     ]
