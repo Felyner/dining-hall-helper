@@ -23,7 +23,11 @@ def index():
         pass
         cowell_post_total += 1
     pass
-    cowell_rating_avg = cowell_rating_total / rating_total
+    if rating_total != 0:
+        cowell_rating_avg = cowell_rating_total / rating_total
+    else:
+        cowell_rating_avg = 0
+    pass
     crown_posts = db(db.posts.dh_name == 'crown').select(db.posts.ALL)
     crown_post_total = 0
     crown_rating_total = 0
@@ -35,7 +39,11 @@ def index():
         pass
         crown_post_total += 1
     pass
-    crown_rating_avg = crown_rating_total / rating_total
+    if rating_total != 0:
+        crown_rating_avg = crown_rating_total / rating_total
+    else:
+        crown_rating_avg = 0
+    pass
     porter_posts = db(db.posts.dh_name == 'porter').select(db.posts.ALL)
     porter_post_total = 0
     porter_rating_total = 0
@@ -47,7 +55,11 @@ def index():
         pass
         porter_post_total += 1
     pass
-    porter_rating_avg = porter_rating_total / rating_total
+    if rating_total != 0:
+        porter_rating_avg = porter_rating_total / rating_total
+    else:
+        porter_rating_avg = 0
+    pass
     eight_posts = db(db.posts.dh_name == 'eight').select(db.posts.ALL)
     eight_post_total = 0
     eight_rating_total = 0
@@ -59,7 +71,11 @@ def index():
         pass
         eight_post_total += 1
     pass
-    eight_rating_avg = eight_rating_total / rating_total
+    if rating_total != 0:
+        eight_rating_avg = eight_rating_total / rating_total
+    else:
+        eight_rating_avg = 0
+    pass
     nine_posts = db(db.posts.dh_name == 'nine').select(db.posts.ALL)
     nine_post_total = 0
     nine_rating_total = 0
@@ -71,7 +87,11 @@ def index():
         pass
         nine_post_total += 1
     pass
-    nine_rating_avg = nine_rating_total / rating_total
+    if rating_total != 0:
+        nine_rating_avg = nine_rating_total / rating_total
+    else:
+        nine_rating_avg = 0
+    pass
     return locals()
 
 @auth.requires_login()
