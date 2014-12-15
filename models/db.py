@@ -1,8 +1,8 @@
-from gluon.tools import Auth
+from gluon.tools import Auth, Crud
 from gluon.contrib.login_methods.email_auth import email_auth
 import datetime
 db = DAL('sqlite://storage.sqlite')
-
+crud=Crud(db)
 auth = Auth(db)
 auth.define_tables()
 auth.settings.login_methods.append(email_auth('smtp.gmail.com:465', '@ucsc.com'))
