@@ -1,1 +1,2 @@
-Dining Hall Helper
+# Dining Hall Rater
+This web application allows users to login or register under their UC Santa Cruz email address (ucsc.edu) and rate the dining halls on campus. Other features of this application include picture uploads, comments, and basic social networking capabilities such as adding friends and viewing feeds comprised of other's ratings, pictures, and comments. All features of this application were programmed using the Web2Py Web Framework and Twitter Bootstrap.
